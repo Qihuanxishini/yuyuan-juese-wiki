@@ -308,5 +308,16 @@ var ITEMS_DATA = [
       { name: "花卉皮肤 3", icon: "wanyuan_huahui_skin3.png", desc: "Elegant 品质皮肤" },
       { name: "花卉皮肤 4", icon: "wanyuan_huahui_skin4.png", desc: "Elegant 品质皮肤" }
     ]
+  },
+  {
+    id: "wanyuan_bayinghe",
+    name: "八音盒",
+    icon: "wanyuan_bayinghe.png",
+    category: "道具",
+    desc: "花仙子专属八音盒，可以播放精选的音乐（支持哈基三百首兼容）。音乐播放期间，会给附近的小范围内所有玩家周期性提供强大的「悠扬乐曲」增益 Buff：移动速度增加 15%、生命值持续恢复（5/分钟）、理智值持续恢复（10/分钟），持续 10 秒。停止播放时增益会在持续时间结束后消失。",
+    obtain: "花仙子专属合成",
+    usage: "放入或携带后播放音乐，提供光照与大范围强力增益 Buff（+15%移速，生命/理智恢复）。",
+    recipe: "桃花 x10，金块 x5，齿轮 x5",
+    skins: []
   }
 ];
