@@ -121,6 +121,68 @@
       '</div>';
   }
 
+  // ── 鼠标梦幻特效 ───────────────────────────────────────
+
+  function initCursorTrail() {
+    if (!document.body) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+
+    var layer = document.createElement('div');
+    layer.className = 'cursor-trail-layer';
+    document.body.appendChild(layer);
+
+    var symbols = ['✦', '❄', '✧'];
+    var lastTime = 0;
+    var lastX = 0;
+    var lastY = 0;
+    var minDistance = 18;
+    var interval = 36;
+    var maxParticles = 22;
+
+    // -- [喵喵喵]: 轻量鼠标梦幻特效，限制粒子频率和数量避免影响站点性能 (2026-03-30)
+    document.addEventListener('pointermove', function (event) {
+      var now = Date.now();
+      var dx = event.clientX - lastX;
+      var dy = event.clientY - lastY;
+      var distance = Math.sqrt(dx * dx + dy * dy);
+      if (now - lastTime < interval || distance < minDistance) return;
+
+      lastTime = now;
+      lastX = event.clientX;
+      lastY = event.clientY;
+
+      var particle = document.createElement('span');
+      var size = 12 + Math.random() * 10;
+      var driftX = -20 + Math.random() * 40;
+      var driftY = -26 - Math.random() * 22;
+      particle.className = 'cursor-trail-particle';
+      particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      particle.style.left = event.clientX + 'px';
+      particle.style.top = event.clientY + 'px';
+      particle.style.fontSize = size + 'px';
+      particle.style.setProperty('--drift-x', driftX + 'px');
+      particle.style.setProperty('--drift-y', driftY + 'px');
+      particle.style.setProperty('--particle-rotate', (-18 + Math.random() * 36) + 'deg');
+      particle.style.animationDuration = (0.85 + Math.random() * 0.45) + 's';
+
+      if (particle.textContent === '❄') {
+        particle.classList.add('particle-snow');
+      } else if (particle.textContent === '✧') {
+        particle.classList.add('particle-soft');
+      }
+
+      layer.appendChild(particle);
+      if (layer.childElementCount > maxParticles) {
+        layer.removeChild(layer.firstElementChild);
+      }
+
+      window.setTimeout(function () {
+        if (particle.parentNode) particle.parentNode.removeChild(particle);
+      }, 1500);
+    }, { passive: true });
+  }
+
   // ── 列表页 ────────────────────────────────────────────
 
   function initListPage(data, type) {
@@ -367,6 +429,6 @@
   window.initListPage = initListPage;
   window.initDetailPage = initDetailPage;
 
-  // 兜底：首页无 initListPage/initDetailPage 调用，直接触发导航渲染
   renderNav('');
+  initCursorTrail();
 }());
