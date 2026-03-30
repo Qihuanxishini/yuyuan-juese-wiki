@@ -160,7 +160,7 @@ var ITEMS_DATA = [
     usage: "点击地面施法；扫描16格内大树/矿石/作物/植物，生成分身自动采集；消耗5精神，10秒冷却",
     recipe: "幻梦孢子 x15，红宝石 x3，活木 x2",
     skins: [
-      { name: "心愿无暇", icon: "wanyuan_love_staff_skin_xin.png", desc: "Elegant 品质皮肤", paid: true }
+      // { name: "心愿无暇", icon: "wanyuan_love_staff_skin_xin.png", desc: "Elegant 品质皮肤", paid: true }
     ]
   },
   {
