@@ -7,60 +7,117 @@
   <title>花仙子 Wiki</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body class="page-home">
   <nav id="main-nav"></nav>
 
-  <!-- 人物展示区 -->
-  <div class="hero-section">
-    <img class="hero-portrait" src="assets/img/character.png" alt="万圆"
-         onerror="this.onerror=null;this.src='assets/img/unknown.png'">
-    <div class="hero-name">绾缘</div>
-    <div class="hero-subtitle">花仙子</div>
+  <main class="container home-shell">
+    <section class="hero-section">
+      <div class="hero-layout">
+        <div class="hero-copy">
+          <div class="hero-kicker">Moonlit Floral Archive</div>
+          <h1 class="hero-name">绾缘</h1>
+          <p class="hero-subtitle">
+            花仙子角色图鉴站。这里收录专属道具、料理、植物与其他资料，
+            以更细腻、更梦幻的方式整理绾缘的世界观与模组内容。
+          </p>
 
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <span class="hstat-label">生命</span>
-        <span class="hstat-value">200</span>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <span class="hstat-label">生命</span>
+              <span class="hstat-value">200</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hstat-label">饱食度</span>
+              <span class="hstat-value">150</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hstat-label">精神</span>
+              <span class="hstat-value">175</span>
+            </div>
+          </div>
+
+          <div class="hero-traits">
+            <div class="hero-trait">潮湿时持续回复生命与精神。</div>
+            <div class="hero-trait">自动照料附近植物，并伴随植物系特效。</div>
+            <div class="hero-trait">偏爱甜食与花系食谱，拥有专属配方与额外掉落能力。</div>
+          </div>
+
+          <div class="hero-actions">
+            <a class="hero-action hero-action-primary" href="items/index.html">进入图鉴</a>
+            <a class="hero-action hero-action-secondary" href="#catalog">查看分类</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-portrait-frame">
+            <img class="hero-portrait" src="assets/img/character.png" alt="绾缘"
+                 onerror="this.onerror=null;this.src='assets/img/unknown.png'">
+          </div>
+
+          <div class="hero-skins">
+            <div class="hero-skins-title">角色印象</div>
+            <div class="hero-skin-list">
+              <div class="hero-skin-item"><span class="hero-skin-name">花灵</span></div>
+              <div class="hero-skin-item"><span class="hero-skin-name">月色</span></div>
+              <div class="hero-skin-item"><span class="hero-skin-name">甜梦</span></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="hero-stat">
-        <span class="hstat-label">饱食度</span>
-        <span class="hstat-value">150</span>
+    </section>
+
+    <section class="home-catalog" id="catalog">
+      <div class="section-heading">
+        <div class="section-kicker">Catalog</div>
+        <h2 class="section-title">内容图鉴</h2>
+        <p class="section-subtitle">
+          从角色专属道具到花园植物，每个分类都整理成可浏览、可检索的静态图鉴页面。
+        </p>
       </div>
-      <div class="hero-stat">
-        <span class="hstat-label">精神</span>
-        <span class="hstat-value">175</span>
+
+      <div class="category-cards">
+        <a class="category-card category-items" href="items/index.html">
+          <div>
+            <div class="card-eyebrow">Items</div>
+            <div class="card-label">道具</div>
+            <div class="card-desc">查看装备、背包、饰品与各类功能物件。</div>
+          </div>
+          <div class="card-cta">进入图鉴 →</div>
+        </a>
+
+        <a class="category-card category-food" href="food/index.html">
+          <div>
+            <div class="card-eyebrow">Cuisine</div>
+            <div class="card-label">食物</div>
+            <div class="card-desc">浏览专属料理、甜点与角色偏好食谱。</div>
+          </div>
+          <div class="card-cta">查看料理 →</div>
+        </a>
+
+        <a class="category-card category-plants" href="plants/index.html">
+          <div>
+            <div class="card-eyebrow">Garden</div>
+            <div class="card-label">植物</div>
+            <div class="card-desc">追踪植物成长、掉落与花园生态内容。</div>
+          </div>
+          <div class="card-cta">探索植物 →</div>
+        </a>
+
+        <a class="category-card category-materials" href="materials/index.html">
+          <div>
+            <div class="card-eyebrow">Notes</div>
+            <div class="card-label">其他</div>
+            <div class="card-desc">收录材料、补充条目与其他相关资料。</div>
+          </div>
+          <div class="card-cta">继续查看 →</div>
+        </a>
       </div>
-    </div>
 
-    <div class="hero-traits">
-      <div class="hero-trait">✦ 潮湿时持续回复生命与精神</div>
-      <div class="hero-trait">✦ 自动照料附近植物，并伴随植物系特效</div>
-      <div class="hero-trait">✦ 喜欢太妃糖，拥有专属配方与额外掉落能力</div>
-    </div>
-
-  </div>
-
-  <!-- 分类导航 -->
-  <div class="container">
-    <div class="section-title">内容图鉴</div>
-    <div class="category-cards">
-      <a class="category-card" href="items/index.html">
-        <div class="card-label">道具</div>
-      </a>
-      <a class="category-card" href="food/index.html">
-        <div class="card-label">食物</div>
-      </a>
-      <a class="category-card" href="plants/index.html">
-        <div class="card-label">植物</div>
-      </a>
-      <a class="category-card" href="materials/index.html">
-        <div class="card-label">其他</div>
-      </a>
-    </div>
-    <div class="home-footer">
-      <p>花仙子模组 &middot; 万圆团队</p>
-    </div>
-  </div>
+      <div class="home-footer">
+        <p>花仙子模组 · 万圆团队 · 静态 Wiki 站点</p>
+      </div>
+    </section>
+  </main>
 
   <script src="assets/js/common.js"></script>
 </body>
