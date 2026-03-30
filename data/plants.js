@@ -9,7 +9,9 @@ var PLANTS_DATA = [
     obtain: "种植圆圆橘子树种",
     usage: "成熟后采摘橘子（x7）；砍伐可获得木头 x1-3",
     recipe: "",
-    skins: [],
+    skins: [
+      { name: "花间梦", icon: "wanyuan_orange_tree_yun.png", desc: "Elegant 品质皮肤", paid: true }
+    ],
     grow_time: "约53分钟（萌芽20m→树苗10m→成长5m→开花8m→结果10m）",
     drop: "圆圆橘子 x7（采摘）；木头 x1-3（砍伐）"
   },
@@ -35,7 +37,9 @@ var PLANTS_DATA = [
     obtain: "合成：纷纷草莓 x15，腐烂食物 x2，硝石 x2，精神 -5",
     usage: "采摘获得草莓（x5）；可挖掘移植；冬季停止生长",
     recipe: "纷纷草莓 x15，腐烂食物 x2，硝石 x2，精神 -5",
-    skins: [],
+    skins: [
+      { name: "粉粉色", icon: "wanyuan_strawberry_bush_fen.png", desc: "Elegant 品质皮肤", paid: true }
+    ],
     grow_time: "采摘后约15分钟再生（随机±5分钟）；冬季停止",
     drop: "纷纷草莓 x5"
   },
