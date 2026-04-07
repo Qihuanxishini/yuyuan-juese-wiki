@@ -82,10 +82,10 @@ var FOOD_DATA = [
     category: "食物",
     desc: "草莓酥酥塔，寒暑不侵，精神恢复效果出众。",
     obtain: "烹饪锅 / 便携锅",
-    usage: "食用后300秒内：免疫冰冻和火焰伤害",
+    usage: "食用后300秒内：免疫火焰伤害，并抵消过冷/过热掉血",
     recipe: "万圆草莓 x2，山羊奶 x1，蜂蜜 x1",
     skins: [],
-    hunger: 0,
+    hunger: 15,
     health: 20,
     sanity: 70,
     perish: "3游戏天"
