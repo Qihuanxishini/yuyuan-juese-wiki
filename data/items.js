@@ -121,7 +121,8 @@ var ITEMS_DATA = [
     usage: "放置后作为储物箱（5页共180格，无限堆叠），并兼作科技站；支持一键存入。阶段科技：云梦=科学2、钓鱼1；云梦·贰=科学2、魔法2、航海1、钓鱼1；云梦·叁=科学2、魔法3、远古2、天体1、航海2、钓鱼1、月锻1、影锻1；云梦·极=科学2、魔法3、远古4、天体3、航海2、钓鱼1、月锻2、影锻2",
     recipe: "初始：木板 x10、石砖 x5、红宝石 x3、蓝宝石 x3；升贰：齿轮 x3、金块 x10、龙鳞 x2；升叁：铥矿 x6、噩梦燃料 x12、月岩 x8、亮茄外壳 x6；升极：铥矿 x10、月岩 x12、纯粹辉煌 x4、恐怖燃料 x4",
     skins: [
-      { name: "心云球", icon: "wanyuan_yunmeng_box_skin_rod.png", desc: "Elegant 品质皮肤" }
+      { name: "心云球", icon: "wanyuan_yunmeng_box_skin_rod.png", desc: "Elegant 品质皮肤" },
+      { name: "福福", icon: "wanyuan_yunmeng_box_skin_fufu.png", desc: "Elegant 品质皮肤" }
     ]
   },
   {
@@ -232,6 +233,17 @@ var ITEMS_DATA = [
     obtain: "花仙子角色可直接制作（无需科技台）",
     usage: "装备作为近战武器（伤害75，移速+20%）；无耐久消耗",
     recipe: "树枝 x3，浆果 x5",
+    skins: []
+  },
+  {
+    id: "wanyuan_gulu_ball",
+    name: "咕噜球",
+    icon: "wanyuan_gulu_ball.png",
+    category: "道具",
+    desc: "咕噜球，抛向海面后会在落点周围搜索海洋鱼类与龙虾，把命中的目标直接转成对应掉落物并打包成礼物交给投掷者。",
+    obtain: "花仙子专属合成",
+    usage: "投向海面；自动捕捉落点周围的海鱼和龙虾，并把收获打包成礼物放入背包",
+    recipe: "金块 x5",
     skins: []
   },
   {
