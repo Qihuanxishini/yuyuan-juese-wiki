@@ -269,6 +269,17 @@ var ITEMS_DATA = [
     skins: []
   },
   {
+    id: "wanyuan_decay_weapon",
+    name: "天生牙",
+    icon: "wanyuan_decay_weapon.png",
+    category: "武器",
+    desc: "特殊近战治疗武器。命中时不会造成正常伤害，而是让目标短暂回春；回复量最高为目标最大生命值的 50%，随后这部分生命会在 10 秒内线性衰减退回。手持时可通过左键、F、Ctrl+F 对友方玩家、队友随从和常规目标发起这套专属回春攻击。",
+    obtain: "花仙子专属合成",
+    usage: "近战挥砍武器（基础伤害 0，攻击距离 1.5/2）；左键、F、Ctrl+F 都会触发【破釜沉舟】回春攻击；适合抢救友方或临时抬高目标血线，但回复生命会在 10 秒内逐步衰减",
+    recipe: "长矛 x2，犬牙 x3，金块 x1",
+    skins: []
+  },
+  {
     id: "wanyuan_yuelideng",
     name: "月黎灯",
     icon: "wanyuan_yuelideng.png",
