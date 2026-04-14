@@ -211,7 +211,9 @@ var ITEMS_DATA = [
     obtain: "花仙子专属合成",
     usage: "放置后自动生产蜂蜜（需附近有花朵，非冬季）；蜂蜜满40个时采收；蜂蜜≥30时额外获得1~3蜂王浆",
     recipe: "桃花 x35，精神消耗 x20，蜜蜂 x12，蜂巢 x4，蜂王浆 x5",
-    skins: []
+    skins: [
+      { name: "咕噜球", icon: "wanyuan_beebox_skin_guluqiu.png", desc: "Elegant 品质免费皮肤" }
+    ]
   },
   {
     id: "wy_simplehotspring",
@@ -326,10 +328,11 @@ var ITEMS_DATA = [
     usage: "放置后放入花瓣或恶魔花瓣（占用格数超过3格）；每300秒刷新周围花朵；夜间自动亮灯",
     recipe: "木头 x1，花瓣 x4，石头 x3",
     skins: [
-      { name: "花卉皮肤 1", icon: "wanyuan_huahui_skin1.png", desc: "Elegant 品质皮肤" },
-      { name: "花卉皮肤 2", icon: "wanyuan_huahui_skin2.png", desc: "Elegant 品质皮肤" },
-      { name: "花卉皮肤 3", icon: "wanyuan_huahui_skin3.png", desc: "Elegant 品质皮肤" },
-      { name: "花卉皮肤 4", icon: "wanyuan_huahui_skin4.png", desc: "Elegant 品质皮肤" }
+      { name: "多肉", icon: "wanyuan_huahui_skin1.png", desc: "Elegant 品质免费皮肤" },
+      { name: "百合", icon: "wanyuan_huahui_skin2.png", desc: "Elegant 品质免费皮肤" },
+      { name: "墨玉", icon: "wanyuan_huahui_skin3.png", desc: "Elegant 品质免费皮肤" },
+      { name: "秋菊", icon: "wanyuan_huahui_skin4.png", desc: "Elegant 品质免费皮肤" },
+      { name: "香荷", icon: "wanyuan_huahui_skin5.png", desc: "Elegant 品质免费皮肤" }
     ]
   },
   {
