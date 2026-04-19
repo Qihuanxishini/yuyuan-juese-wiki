@@ -389,5 +389,27 @@ var ITEMS_DATA = [
     usage: "放置后提供小范围理智光环；对其使用成品食物(烹饪)可祈顺，获得120秒移速+20%效果，重复使用可续时；可用锤子拆除",
     recipe: "金块 x3，木头 x5",
     skins: []
+  },
+  {
+    id: "wanyuan_meihua",
+    name: "梅花景",
+    icon: "wanyuan_meihua.png",
+    category: "道具",
+    desc: "梅花景，花仙子专属装饰摆件。放置后持续播放梅花待机动画，自带微弱理智光环，可作为纯装饰建筑摆放在基地中。",
+    obtain: "花仙子专属合成（装饰分类）",
+    usage: "放置后提供小范围理智光环；默认外观为梅花，可在拥有皮肤授权时切换迎春花或海棠花外观；可用锤子拆除",
+    recipe: "花瓣 x8，树枝 x4，木头 x4",
+    skins: [
+      {
+        name: "迎春花",
+        icon: "wanyuan_meihua_yingchun.png",
+        desc: "收费皮肤，使用同一套建筑动画包，切换为迎春花待机外观。"
+      },
+      {
+        name: "海棠花",
+        icon: "wanyuan_meihua_haitang.png",
+        desc: "收费皮肤，使用同一套建筑动画包，切换为海棠花待机外观。"
+      }
+    ]
   }
 ];
