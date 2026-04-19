@@ -403,12 +403,14 @@ var ITEMS_DATA = [
       {
         name: "迎春花",
         icon: "wanyuan_meihua_yingchun.png",
-        desc: "收费皮肤，使用同一套建筑动画包，切换为迎春花待机外观。"
+        desc: "迎春花外观。",
+        paid: true
       },
       {
         name: "海棠花",
         icon: "wanyuan_meihua_haitang.png",
-        desc: "收费皮肤，使用同一套建筑动画包，切换为海棠花待机外观。"
+        desc: "海棠花外观。",
+        paid: true
       }
     ]
   }
