@@ -1,130 +1,297 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="wiki-depth" content="0">
-  <title>花仙子 Wiki</title>
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body class="page-home">
-  <nav id="main-nav"></nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="wiki-depth" content="0" />
+    <meta
+      name="description"
+      content="绾缘花仙子 DST 模组资料馆，收录角色能力、专属道具、料理、植物与材料资料。"
+    />
+    <title>绾缘花仙子 | DST Mod Archive</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body class="page-home">
+    <nav id="main-nav"></nav>
 
-  <main class="container home-shell">
-    <section class="hero-section">
-      <div class="hero-layout">
-        <div class="hero-copy">
-          <div class="hero-kicker">Moonlit Floral Archive</div>
-          <div class="hero-badges">
-            <span class="hero-badge">花灵角色</span>
-            <span class="hero-badge">甜梦图鉴</span>
+    <main class="container home-shell">
+      <section class="hero-section" aria-labelledby="hero-title">
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <div class="hero-kicker">DST Character Mod Archive</div>
+            <div class="hero-badges">
+              <span class="hero-badge">花仙子角色</span>
+              <span class="hero-badge">67 个图鉴条目</span>
+              <span class="hero-badge">玩法资料馆</span>
+            </div>
+
+            <h1 class="hero-name" id="hero-title">绾缘花仙子</h1>
+            <p class="hero-subtitle">
+              一个围绕桃花、甜梦、植物照料与专属科技展开的 Don't Starve Together
+              角色模组展厅。
+            </p>
+
+            <div class="hero-stats" aria-label="角色基础属性">
+              <div class="hero-stat">
+                <span class="hstat-label">生命</span>
+                <span class="hstat-value">200</span>
+              </div>
+              <div class="hero-stat">
+                <span class="hstat-label">饱食</span>
+                <span class="hstat-value">150</span>
+              </div>
+              <div class="hero-stat">
+                <span class="hstat-label">精神</span>
+                <span class="hstat-value">175</span>
+              </div>
+            </div>
+
+            <div class="hero-traits">
+              <div class="hero-trait">
+                潮湿时持续回复生命与精神，像被花露与月色守护。
+              </div>
+              <div class="hero-trait">
+                自动照料附近植物，配合花园、果树与梦幻蘑菇形成长期生态。
+              </div>
+              <div class="hero-trait">
+                偏爱甜食与花系料理，拥有专属配方、科技站和储物体系。
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <a class="hero-action hero-action-primary" href="#catalog"
+                >浏览模组内容</a
+              >
+              <a
+                class="hero-action hero-action-secondary"
+                href="items/index.html"
+                >进入完整图鉴</a
+              >
+            </div>
           </div>
 
-          <h1 class="hero-name">绾缘</h1>
-          <p class="hero-subtitle">
-            温柔、甜软、带着月色与花香的花仙子角色图鉴站。
-            这里收录专属道具、料理、植物与其他资料，以更可爱、更梦幻的方式整理绾缘的世界观与模组内容。
+          <div class="hero-visual" aria-label="角色展示">
+            <div class="hero-orbit hero-orbit-a"></div>
+            <div class="hero-orbit hero-orbit-b"></div>
+            <div class="hero-spark hero-spark-a">✦</div>
+            <div class="hero-spark hero-spark-b">❀</div>
+            <div class="hero-spark hero-spark-c">✧</div>
+
+            <div class="hero-portrait-frame">
+              <img
+                class="hero-portrait"
+                src="assets/img/character.png"
+                alt="绾缘角色立绘"
+                onerror="this.onerror=null;this.src='assets/img/unknown.png'"
+              />
+            </div>
+
+            <div class="hero-skins">
+              <div class="hero-skins-title">展示重点</div>
+              <div class="hero-skin-list">
+                <div class="hero-skin-item">
+                  <span class="hero-skin-name">桃花科技</span>
+                </div>
+                <div class="hero-skin-item">
+                  <span class="hero-skin-name">甜品料理</span>
+                </div>
+                <div class="hero-skin-item">
+                  <span class="hero-skin-name">梦幻花园</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="showcase-strip" aria-label="站点摘要">
+        <div class="showcase-card showcase-card-wide">
+          <span class="showcase-label">Archive Size</span>
+          <strong>67</strong>
+          <p>已整理条目，覆盖道具、料理、植物与材料。</p>
+        </div>
+        <div class="showcase-card">
+          <span class="showcase-label">Items</span>
+          <strong>39</strong>
+          <p>装备、容器、科技站、工具与功能物件。</p>
+        </div>
+        <div class="showcase-card">
+          <span class="showcase-label">Cuisine</span>
+          <strong>14</strong>
+          <p>甜点、饮品与角色偏好料理。</p>
+        </div>
+        <div class="showcase-card">
+          <span class="showcase-label">Garden</span>
+          <strong>8</strong>
+          <p>果树、草莓丛与幻梦蘑菇生态。</p>
+        </div>
+      </section>
+
+      <section class="home-catalog" id="catalog">
+        <div class="section-heading section-heading-split">
+          <div>
+            <div class="section-kicker">Browse The Mod</div>
+            <h2 class="section-title">模组内容展厅</h2>
+          </div>
+          <p class="section-subtitle">
+            从角色专属道具到花园生态，每个分类都整理成清晰的图鉴入口，方便玩家快速找到想看的内容。
           </p>
-
-          <div class="hero-stats">
-            <div class="hero-stat">
-              <span class="hstat-label">生命</span>
-              <span class="hstat-value">200</span>
-            </div>
-            <div class="hero-stat">
-              <span class="hstat-label">饱食度</span>
-              <span class="hstat-value">150</span>
-            </div>
-            <div class="hero-stat">
-              <span class="hstat-label">精神</span>
-              <span class="hstat-value">175</span>
-            </div>
-          </div>
-
-          <div class="hero-traits">
-            <div class="hero-trait">潮湿时持续回复生命与精神，像被夜色与花露温柔守护。</div>
-            <div class="hero-trait">自动照料附近植物，并伴随柔和的植物系特效。</div>
-            <div class="hero-trait">偏爱甜食与花系食谱，拥有专属配方与额外掉落能力。</div>
-          </div>
-
-          <div class="hero-actions">
-            <a class="hero-action hero-action-primary" href="items/index.html">进入图鉴</a>
-            <a class="hero-action hero-action-secondary" href="#catalog">查看分类</a>
-          </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="hero-orbit hero-orbit-a"></div>
-          <div class="hero-orbit hero-orbit-b"></div>
-          <div class="hero-spark hero-spark-a">✦</div>
-          <div class="hero-spark hero-spark-b">❀</div>
-          <div class="hero-spark hero-spark-c">✦</div>
-
-          <div class="hero-portrait-frame">
-            <img class="hero-portrait" src="assets/img/character.png" alt="绾缘"
-                 onerror="this.onerror=null;this.src='assets/img/unknown.png'">
-          </div>
-
-          <div class="hero-skins">
-            <div class="hero-skins-title">角色印象</div>
-            <div class="hero-skin-list">
-              <div class="hero-skin-item"><span class="hero-skin-name">游戏人间</span></div>
-              <div class="hero-skin-item"><span class="hero-skin-name">可爱</span></div>
-              <div class="hero-skin-item"><span class="hero-skin-name">甜美</span></div>
+        <div class="category-cards">
+          <a class="category-card category-items" href="items/index.html">
+            <div class="card-icon-row">
+              <img
+                src="assets/img/wanyuan_tools_tianhai.png"
+                alt=""
+                onerror="this.onerror=null;this.src='assets/img/unknown.png'"
+              />
+              <div class="card-eyebrow">Items</div>
             </div>
-          </div>
+            <div>
+              <div class="card-label">道具</div>
+              <div class="card-desc">
+                多功能工具、储物容器、科技站、灯具、武器与法杖。
+              </div>
+            </div>
+            <div class="card-cta">查看 39 项</div>
+          </a>
+
+          <a class="category-card category-food" href="food/index.html">
+            <div class="card-icon-row">
+              <img
+                src="assets/img/wanyuan_taohuasu.png"
+                alt=""
+                onerror="this.onerror=null;this.src='assets/img/unknown.png'"
+              />
+              <div class="card-eyebrow">Cuisine</div>
+            </div>
+            <div>
+              <div class="card-label">食物</div>
+              <div class="card-desc">
+                桃花酥、果冻、蛋糕、饮品与恢复效果清晰标注。
+              </div>
+            </div>
+            <div class="card-cta">查看 14 项</div>
+          </a>
+
+          <a class="category-card category-plants" href="plants/index.html">
+            <div class="card-icon-row">
+              <img
+                src="assets/img/wanyuan_orange_tree.png"
+                alt=""
+                onerror="this.onerror=null;this.src='assets/img/unknown.png'"
+              />
+              <div class="card-eyebrow">Garden</div>
+            </div>
+            <div>
+              <div class="card-label">植物</div>
+              <div class="card-desc">
+                果树、草莓丛和幻梦蘑菇的成长周期、掉落与用途。
+              </div>
+            </div>
+            <div class="card-cta">查看 8 项</div>
+          </a>
+
+          <a
+            class="category-card category-materials"
+            href="materials/index.html"
+          >
+            <div class="card-icon-row">
+              <img
+                src="assets/img/wanyuan_dream_spore.png"
+                alt=""
+                onerror="this.onerror=null;this.src='assets/img/unknown.png'"
+              />
+              <div class="card-eyebrow">Notes</div>
+            </div>
+            <div>
+              <div class="card-label">其他</div>
+              <div class="card-desc">
+                桃花、果实、孢子、琉璃结晶等核心材料与补充条目。
+              </div>
+            </div>
+            <div class="card-cta">查看 6 项</div>
+          </a>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="home-catalog" id="catalog">
-      <div class="section-heading">
-        <div class="section-kicker">Catalog</div>
-        <h2 class="section-title">内容图鉴</h2>
-        <p class="section-subtitle">
-          从角色专属道具到花园植物，每个分类都整理成更像收藏册的静态图鉴页面，适合慢慢浏览，也适合快速查找。
-        </p>
-      </div>
-
-      <div class="category-cards">
-        <a class="category-card category-items" href="items/index.html">
+      <section class="feature-section" aria-labelledby="feature-title">
+        <div class="section-heading section-heading-split">
           <div>
-            <div class="card-eyebrow">Items</div>
-            <div class="card-label">道具</div>
-            <div class="card-desc">查看装备、背包、饰品与各类功能物件。</div>
+            <div class="section-kicker">Featured Records</div>
+            <h2 class="section-title" id="feature-title">精选内容</h2>
           </div>
-          <div class="card-cta">进入图鉴 →</div>
-        </a>
+          <p class="section-subtitle">
+            把最能代表绾缘玩法风格的条目放在首页，访客不需要先翻完整图鉴也能理解模组核心。
+          </p>
+        </div>
 
-        <a class="category-card category-food" href="food/index.html">
-          <div>
-            <div class="card-eyebrow">Cuisine</div>
-            <div class="card-label">食物</div>
-            <div class="card-desc">浏览专属料理、甜点与角色偏好食谱。</div>
-          </div>
-          <div class="card-cta">查看料理 →</div>
-        </a>
+        <div class="feature-grid">
+          <a
+            class="feature-card feature-large"
+            href="items/detail.html?id=wanyuan_yunmeng_box"
+          >
+            <img
+              src="assets/img/wanyuan_yunmeng_box.png"
+              alt="云梦"
+              onerror="this.onerror=null;this.src='assets/img/unknown.png'"
+            />
+            <div>
+              <span>核心科技站</span>
+              <h3>云梦</h3>
+              <p>
+                4
+                阶段超大储物科技站，逐步解锁科学、魔法、航海、远古、月锻与影锻科技。
+              </p>
+            </div>
+          </a>
+          <a
+            class="feature-card"
+            href="items/detail.html?id=wanyuan_tools_tianhai"
+          >
+            <img
+              src="assets/img/wanyuan_tools_tianhai.png"
+              alt="西陵叉"
+              onerror="this.onerror=null;this.src='assets/img/unknown.png'"
+            />
+            <div>
+              <span>多功能工具</span>
+              <h3>西陵叉[巧]</h3>
+              <p>砍伐、挖矿、锤击、捕网、铺地皮等模式切换。</p>
+            </div>
+          </a>
+          <a class="feature-card" href="food/detail.html?id=wanyuan_guodong">
+            <img
+              src="assets/img/wanyuan_guodong.png"
+              alt="蹦蹦果冻"
+              onerror="this.onerror=null;this.src='assets/img/unknown.png'"
+            />
+            <div>
+              <span>甜梦料理</span>
+              <h3>蹦蹦果冻</h3>
+              <p>短时间内大幅提升移动速度，适合探索与赶路。</p>
+            </div>
+          </a>
+          <a
+            class="feature-card"
+            href="plants/detail.html?id=wanyuan_dream_mushroom"
+          >
+            <img
+              src="assets/img/wanyuan_dream_mushroom.png"
+              alt="幻梦蘑菇"
+              onerror="this.onerror=null;this.src='assets/img/unknown.png'"
+            />
+            <div>
+              <span>梦幻生态</span>
+              <h3>幻梦蘑菇</h3>
+              <p>阶段成长依赖雨天，成熟后采集幻梦孢子。</p>
+            </div>
+          </a>
+        </div>
+      </section>
 
-        <a class="category-card category-plants" href="plants/index.html">
-          <div>
-            <div class="card-eyebrow">Garden</div>
-            <div class="card-label">植物</div>
-            <div class="card-desc">追踪植物成长、掉落与花园生态内容。</div>
-          </div>
-          <div class="card-cta">探索植物 →</div>
-        </a>
-
-        <a class="category-card category-materials" href="materials/index.html">
-          <div>
-            <div class="card-eyebrow">Notes</div>
-            <div class="card-label">其他</div>
-            <div class="card-desc">收录材料、补充条目与其他相关资料。</div>
-          </div>
-          <div class="card-cta">继续查看 →</div>
-        </a>
-      </div>
-
-      <div class="home-footer">
+      <section class="home-footer">
         <div class="home-footer-kicker">Credits</div>
         <div class="home-footer-title">花仙子模组</div>
         <div class="home-credit-list">
@@ -141,10 +308,9 @@
             <span class="home-credit-name">kp / 鱼丸</span>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
+    </main>
 
-  <script src="assets/js/common.js"></script>
-</body>
+    <script src="assets/js/common.js"></script>
+  </body>
 </html>
