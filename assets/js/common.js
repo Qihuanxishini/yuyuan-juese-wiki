@@ -98,6 +98,7 @@
     { label: "道具", type: "items", href: ROOT + "/items/index.html" },
     { label: "食物", type: "food", href: ROOT + "/food/index.html" },
     { label: "植物", type: "plants", href: ROOT + "/plants/index.html" },
+    { label: "岛屿", type: "islands", href: ROOT + "/islands/index.html" },
     { label: "其他", type: "materials", href: ROOT + "/materials/index.html" },
   ];
 
@@ -913,7 +914,8 @@
   window.initListPage = initListPage;
   window.initDetailPage = initDetailPage;
 
-  renderNav("");
+  var defaultActiveType = document.body ? document.body.getAttribute("data-nav-type") || "" : "";
+  renderNav(defaultActiveType);
   initCursorTrail();
   initAmbientFall();
   initShootingStars();
