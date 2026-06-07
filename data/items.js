@@ -129,6 +129,12 @@ var ITEMS_DATA = [
         icon: "wanyuan_cat_box_skin1.png",
         desc: "Elegant 品质皮肤",
       },
+      {
+        name: "如意",
+        icon: "wanyuan_cat_box_skin_ruyi.png",
+        desc: "Elegant 品质付费皮肤，包含对应容器界面外观",
+        paid: true,
+      },
     ],
   },
   {
