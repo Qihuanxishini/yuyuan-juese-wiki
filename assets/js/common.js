@@ -57,6 +57,7 @@
         eyebrow: "Items Archive",
         subtitle: "绾缘相关装备、背包、功能物件与专属配方部件。",
         search: "搜索道具名称、用途或说明…",
+        icon: "wanyuan_tools_tianhai.png",
         theme: "items",
       },
       food: {
@@ -64,6 +65,7 @@
         eyebrow: "Cuisine Compendium",
         subtitle: "查看绾缘偏好的料理、专属甜点与数值信息。",
         search: "搜索食物名称、效果或说明…",
+        icon: "wanyuan_taohuasu.png",
         theme: "food",
       },
       plants: {
@@ -71,6 +73,7 @@
         eyebrow: "Garden Almanac",
         subtitle: "整理植物成长信息、掉落物与花园相关资料。",
         search: "搜索植物名称、特性或说明…",
+        icon: "wanyuan_orange_tree.png",
         theme: "plants",
       },
       materials: {
@@ -78,6 +81,7 @@
         eyebrow: "Field Notes",
         subtitle: "汇总材料、掉落物与其他补充图鉴条目。",
         search: "搜索名称、来源或说明…",
+        icon: "crystal_of_glaze.png",
         theme: "materials",
       },
     };
@@ -87,6 +91,7 @@
         eyebrow: "Archive",
         subtitle: "",
         search: "搜索名称或说明…",
+        icon: "wanyuan_taohua.png",
         theme: "items",
       }
     );
@@ -95,6 +100,7 @@
   // ── 导航栏 ────────────────────────────────────────────
 
   var NAV_LINKS = [
+    { label: "首页", type: "home", href: ROOT + "/index.html" },
     { label: "道具", type: "items", href: ROOT + "/items/index.html" },
     { label: "食物", type: "food", href: ROOT + "/food/index.html" },
     { label: "植物", type: "plants", href: ROOT + "/plants/index.html" },
@@ -617,7 +623,16 @@
 
     container.innerHTML =
       '<section class="page-shell page-shell-list">' +
-      '<div class="page-banner page-banner-' +
+      '<div class="archive-breadcrumb">' +
+      '<a href="' +
+      ROOT +
+      '/index.html">模组首页</a>' +
+      '<span aria-hidden="true">/</span>' +
+      '<span>' +
+      esc(meta.label) +
+      "图鉴</span>" +
+      "</div>" +
+      '<header class="page-banner page-banner-' +
       esc(meta.theme) +
       '">' +
       '<div class="page-banner-copy">' +
@@ -626,18 +641,34 @@
       "</div>" +
       '<h1 class="page-title">' +
       esc(meta.label) +
-      "</h1>" +
+      "图鉴</h1>" +
       '<p class="page-subtitle">' +
       esc(meta.subtitle) +
       "</p>" +
       "</div>" +
+      '<div class="page-banner-visual" aria-hidden="true">' +
+      '<span>' +
+      data.length +
+      "</span>" +
+      '<img src="' +
+      imgSrc(meta.icon) +
+      '" alt="" ' +
+      onerr() +
+      ">" +
+      "</div>" +
       '<label class="search-panel">' +
-      '<span class="search-label">搜索图鉴</span>' +
-      '<input class="search-box" id="search-input" type="text" placeholder="' +
+      '<span class="search-label">在本页查找</span>' +
+      '<span class="search-field">' +
+      '<span aria-hidden="true">⌕</span>' +
+      '<input class="search-box" id="search-input" type="search" autocomplete="off" placeholder="' +
       esc(meta.search) +
       '">' +
-      '<span class="search-result-count" id="result-count"></span>' +
+      "</span>" +
       "</label>" +
+      "</header>" +
+      '<div class="list-register-head">' +
+      "<span>档案条目</span>" +
+      '<span class="search-result-count" id="result-count" aria-live="polite"></span>' +
       "</div>" +
       '<div class="item-grid" id="item-list"></div>' +
       "</section>";
@@ -683,6 +714,7 @@
       var html = "";
       for (var j = 0; j < filtered.length; j++) {
         var item = filtered[j];
+        var recordNumber = j < 9 ? "0" + (j + 1) : String(j + 1);
         var encodedId = encodeURIComponent(item.id);
         var badges = "";
 
@@ -702,10 +734,15 @@
           '<a class="item-card" href="detail.html?id=' +
           encodedId +
           '">' +
+          '<span class="item-card-index" aria-hidden="true">' +
+          recordNumber +
+          "</span>" +
           '<div class="item-card-media">' +
           '<img class="row-icon" src="' +
           imgSrc(item.icon) +
-          '" alt="" ' +
+          '" alt="' +
+          esc(item.name || meta.label) +
+          '" ' +
           onerr() +
           ">" +
           "</div>" +
@@ -714,7 +751,7 @@
           '<div class="row-name">' +
           esc(item.name || "") +
           "</div>" +
-          '<span class="row-arrow">查看</span>' +
+          '<span class="row-arrow">翻阅 <b aria-hidden="true">↗</b></span>' +
           "</div>" +
           '<p class="row-desc">' +
           esc(item.desc || "暂无描述。") +
@@ -806,16 +843,34 @@
 
     var html =
       '<section class="page-shell page-shell-detail">' +
-      '<div class="detail-back-wrap">' +
-      '<a class="detail-back" href="index.html">← 返回' +
+      '<div class="archive-breadcrumb">' +
+      '<a href="' +
+      ROOT +
+      '/index.html">模组首页</a>' +
+      '<span aria-hidden="true">/</span>' +
+      '<a href="index.html">' +
       esc(meta.label) +
-      "</a>" +
+      "图鉴</a>" +
+      '<span aria-hidden="true">/</span>' +
+      '<span aria-current="page">' +
+      esc(item.name || "详情") +
+      "</span>" +
       "</div>" +
-      '<div class="detail-header">' +
+      '<div class="detail-back-wrap">' +
+      '<a class="detail-back" href="index.html"><span aria-hidden="true">←</span> 返回' +
+      esc(meta.label) +
+      "图鉴</a>" +
+      "</div>" +
+      '<header class="detail-header">' +
       '<div class="detail-icon-wrap">' +
+      '<span class="detail-record-mark">' +
+      esc(meta.label) +
+      "档案</span>" +
       '<img class="detail-icon" src="' +
       imgSrc(item.icon) +
-      '" alt="" ' +
+      '" alt="' +
+      esc(item.name || meta.label) +
+      '" ' +
       onerr() +
       ">" +
       "</div>" +
@@ -836,7 +891,7 @@
       esc(item.desc || "暂无描述。") +
       "</p>" +
       "</div>" +
-      "</div>" +
+      "</header>" +
       '<div class="detail-content">';
 
     if (detailCards) {
@@ -877,7 +932,9 @@
           '<div class="skin-icon-wrap">' +
           '<img class="skin-icon" src="' +
           skinImgSrc(skin.icon) +
-          '" alt="" ' +
+          '" alt="' +
+          esc(skin.name || "皮肤") +
+          '" ' +
           onerr() +
           ">" +
           "</div>" +
@@ -914,7 +971,10 @@
   window.initListPage = initListPage;
   window.initDetailPage = initDetailPage;
 
-  var defaultActiveType = document.body ? document.body.getAttribute("data-nav-type") || "" : "";
+  var defaultActiveType = document.body
+    ? document.body.getAttribute("data-nav-type") ||
+      (document.body.classList.contains("page-home") ? "home" : "")
+    : "";
   renderNav(defaultActiveType);
   initCursorTrail();
   initAmbientFall();
