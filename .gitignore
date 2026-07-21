@@ -1,0 +1,6 @@
+# local preview
+*.log
+server.out.log
+server.err.log
+_start_server.ps1
+test.html

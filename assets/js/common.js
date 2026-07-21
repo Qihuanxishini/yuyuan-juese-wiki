@@ -54,33 +54,33 @@
     var META = {
       items: {
         label: "道具",
-        eyebrow: "道具图鉴",
+        eyebrow: "道具",
         subtitle: "工具、装备、容器、灯具、武器与专属科技站。",
-        search: "搜索道具名称、用途或说明…",
+        search: "搜名称或用途…",
         icon: "wanyuan_tools_tianhai.png",
         theme: "items",
       },
       food: {
         label: "料理",
-        eyebrow: "花间料理",
-        subtitle: "甜点、饮品与恢复数值，方便对照配方和效果。",
-        search: "搜索料理名称、效果或说明…",
+        eyebrow: "料理",
+        subtitle: "甜点、饮品，以及恢复数值和配方。",
+        search: "搜名称或效果…",
         icon: "wanyuan_taohuasu.png",
         theme: "food",
       },
       plants: {
         label: "植物",
-        eyebrow: "花园植物",
-        subtitle: "生长时间、掉落物与种植相关说明。",
-        search: "搜索植物名称、特性或说明…",
+        eyebrow: "植物",
+        subtitle: "生长时间、掉落物，以及怎么种。",
+        search: "搜名称或特性…",
         icon: "wanyuan_orange_tree.png",
         theme: "plants",
       },
       materials: {
         label: "材料",
-        eyebrow: "材料与采集",
-        subtitle: "桃花、果实、孢子与结晶等材料的来源和用途。",
-        search: "搜索名称、来源或说明…",
+        eyebrow: "材料",
+        subtitle: "桃花、果实、孢子与结晶从哪来、能做什么。",
+        search: "搜名称或来源…",
         icon: "crystal_of_glaze.png",
         theme: "materials",
       },
@@ -88,9 +88,9 @@
     return (
       META[type] || {
         label: "",
-        eyebrow: "图鉴",
+        eyebrow: "内容",
         subtitle: "",
-        search: "搜索名称或说明…",
+        search: "搜索…",
         icon: "wanyuan_taohua.png",
         theme: "items",
       }
@@ -127,8 +127,8 @@
       '/index.html">' +
       '<span class="nav-brand-mark">✦</span>' +
       '<span class="nav-brand-copy">' +
-      '<span class="nav-brand-title">花仙子图鉴</span>' +
-      '<span class="nav-brand-subtitle">玩家资料查阅</span>' +
+      '<span class="nav-brand-title">绾缘花仙子</span>' +
+      '<span class="nav-brand-subtitle">模组内容</span>' +
       "</span>" +
       "</a>" +
       '<div class="nav-links">' +
@@ -158,8 +158,8 @@
     var lastX = 0;
     var lastY = 0;
     var minDistance = 18;
-    var interval = 36;
-    var maxParticles = 22;
+    var interval = 64;
+    var maxParticles = 10;
 
     // -- [喵喵喵]: 轻量鼠标梦幻特效，限制粒子频率和数量避免影响站点性能 (2026-03-30)
     document.addEventListener(
@@ -301,7 +301,7 @@
       {
         name: "peach",
         className: "ambient-theme-peach",
-        count: 52,
+        count: 18,
         shapes: [
           "petal-a",
           "petal-b",
@@ -315,7 +315,7 @@
       {
         name: "flower",
         className: "ambient-theme-flower",
-        count: 64,
+        count: 22,
         shapes: [
           "petal-a",
           "petal-b",
@@ -331,14 +331,14 @@
       {
         name: "snow",
         className: "ambient-theme-snow",
-        count: 50,
+        count: 16,
         shapes: ["snow", "snow", "snow", "dot"],
         snowSymbols: ["❄", "✻", "✧"],
       },
       {
         name: "moon",
         className: "ambient-theme-moon",
-        count: 40,
+        count: 12,
         shapes: ["star", "dot", "petal-b", "petal-e", "blossom"],
         starSymbols: ["✦", "✧", "✶"],
       },
@@ -417,9 +417,9 @@
     }
 
     function getCount(theme) {
-      var count = theme.name === "flower" ? 54 : theme.count;
-      if (window.innerWidth < 560) return Math.round(count * 0.52);
-      if (window.innerWidth < 820) return Math.round(count * 0.66);
+      var count = theme.name === "flower" ? 20 : theme.count;
+      if (window.innerWidth < 560) return Math.round(count * 0.4);
+      if (window.innerWidth < 820) return Math.round(count * 0.55);
       if (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) {
         return Math.round(count * 0.72);
       }
@@ -571,7 +571,7 @@
     layer.className = "shooting-star-layer";
     layer.setAttribute("aria-hidden", "true");
 
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < 0; i++) {
       var star = document.createElement("span");
       var palette = randomFrom(palettes);
       var duration = 10 + Math.random() * 8;
@@ -639,7 +639,7 @@
     var filterHtml = "";
     if (categories.length > 1) {
       filterHtml =
-        '<div class="category-filter" id="category-filter" role="group" aria-label="按分类筛选">' +
+        '<div class="category-filter" id="category-filter" role="group" aria-label="分类筛选">' +
         '<button type="button" class="category-chip is-active" data-category="" aria-pressed="true">全部</button>';
       for (var c = 0; c < categories.length; c++) {
         filterHtml +=
@@ -657,11 +657,11 @@
       '<div class="archive-breadcrumb">' +
       '<a href="' +
       ROOT +
-      '/index.html">模组首页</a>' +
+      '/index.html">首页</a>' +
       '<span aria-hidden="true">/</span>' +
       "<span>" +
       esc(meta.label) +
-      "图鉴</span>" +
+      "</span>" +
       "</div>" +
       '<header class="page-banner page-banner-' +
       esc(meta.theme) +
@@ -672,7 +672,7 @@
       "</div>" +
       '<h1 class="page-title">' +
       esc(meta.label) +
-      "图鉴</h1>" +
+      "</h1>" +
       '<p class="page-subtitle">' +
       esc(meta.subtitle) +
       "</p>" +
@@ -688,7 +688,7 @@
       ">" +
       "</div>" +
       '<label class="search-panel">' +
-      '<span class="search-label">在本页查找</span>' +
+      '<span class="search-label">搜索</span>' +
       '<span class="search-field">' +
       '<span aria-hidden="true">⌕</span>' +
       '<input class="search-box" id="search-input" type="search" autocomplete="off" placeholder="' +
@@ -699,7 +699,7 @@
       "</header>" +
       filterHtml +
       '<div class="list-register-head">' +
-      "<span>本页条目</span>" +
+      "<span>列表</span>" +
       '<span class="search-result-count" id="result-count" aria-live="polite"></span>' +
       "</div>" +
       '<div class="item-grid" id="item-list"></div>' +
@@ -740,7 +740,7 @@
         if (kw || activeCategory) {
           resultCount.textContent = "找到 " + filtered.length + " 项";
         } else {
-          resultCount.textContent = "共 " + filtered.length + " 项内容";
+          resultCount.textContent = "共 " + filtered.length + " 项";
         }
       }
 
@@ -796,7 +796,7 @@
           '<span class="row-arrow">查看 <b aria-hidden="true">↗</b></span>' +
           "</div>" +
           '<p class="row-desc">' +
-          esc(row.desc || "暂无描述。") +
+          esc(row.desc || "暂无介绍。") +
           "</p>" +
           '<div class="item-meta">' +
           badges +
@@ -920,12 +920,12 @@
     var meta = dataMeta(type);
 
     function renderError() {
-      document.title = "内容未找到 — 花仙子图鉴";
+      document.title = "找不到内容 — 绾缘花仙子";
       container.innerHTML =
         '<section class="page-shell page-shell-detail">' +
         '<div class="detail-error">' +
         "<strong>找不到这条内容</strong>" +
-        "<p>请返回列表重新选择，或检查链接是否完整。</p>" +
+        "<p>换个链接再试，或回到列表挑一条。</p>" +
         '<a href="index.html">← 返回列表</a>' +
         "</div>" +
         "</section>";
@@ -950,7 +950,7 @@
       return;
     }
 
-    document.title = (item.name || meta.label) + " — 花仙子图鉴";
+    document.title = (item.name || meta.label) + " — 绾缘花仙子";
 
     var infoCards = "";
     infoCards += detailCard("获取方式", item.obtain);
@@ -969,11 +969,11 @@
       '<div class="archive-breadcrumb">' +
       '<a href="' +
       ROOT +
-      '/index.html">模组首页</a>' +
+      '/index.html">首页</a>' +
       '<span aria-hidden="true">/</span>' +
       '<a href="index.html">' +
       esc(meta.label) +
-      "图鉴</a>" +
+      "</a>" +
       '<span aria-hidden="true">/</span>' +
       '<span aria-current="page">' +
       esc(item.name || "详情") +
@@ -982,7 +982,7 @@
       '<div class="detail-back-wrap">' +
       '<a class="detail-back" href="index.html"><span aria-hidden="true">←</span> 返回' +
       esc(meta.label) +
-      "图鉴</a>" +
+      "</a>" +
       "</div>" +
       '<header class="detail-header">' +
       '<div class="detail-icon-wrap">' +
@@ -1013,7 +1013,7 @@
         : "") +
       "</div>" +
       '<p class="detail-summary">' +
-      esc(item.desc || "暂无描述。") +
+      esc(item.desc || "还没有介绍。") +
       "</p>" +
       "</div>" +
       "</header>" +
@@ -1029,7 +1029,7 @@
     if (infoCards) {
       html +=
         '<section class="detail-section-card detail-section-guide">' +
-        '<div class="section-label">查阅要点</div>' +
+        '<div class="section-label">怎么获得 · 怎么用</div>' +
         '<div class="detail-grid detail-grid-nested">' +
         infoCards +
         "</div>" +

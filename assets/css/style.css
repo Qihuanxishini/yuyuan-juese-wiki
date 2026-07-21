@@ -1,41 +1,41 @@
 @import url("./archive.css");
 /* ============================================================
    花仙子 Wiki 静态站视觉系统
-   轻量静态视觉与氛围动效
+   清新简约手账基调 + 轻量氛围
    ============================================================ */
 
 :root {
-  --paper: #fff8ec;
-  --paper-warm: #fff1dc;
-  --paper-soft: rgba(255, 250, 240, 0.84);
-  --ink: #3b2923;
-  --ink-soft: #6e5548;
-  --ink-muted: #927566;
-  --line: rgba(102, 73, 55, 0.16);
-  --line-strong: rgba(102, 73, 55, 0.28);
-  --peach: #ff9f8c;
-  --peach-strong: #ee6d5d;
-  --rose: #ffb8c8;
-  --honey: #f1bd62;
-  --leaf: #84b982;
-  --leaf-deep: #4f8b63;
-  --sky: #8ebed8;
-  --violet: #b9a1df;
-  --moon-night: #3c315f;
-  --moon-night-deep: #211a36;
-  --moon-haze: rgba(121, 105, 171, 0.2);
-  --moon-glow: rgba(255, 239, 188, 0.5);
-  --petal-shadow: rgba(92, 45, 74, 0.14);
-  --meteor-shadow: rgba(43, 30, 72, 0.16);
-  --shadow-lg: 0 34px 96px rgba(61, 39, 62, 0.23);
-  --shadow-md: 0 22px 58px rgba(72, 48, 58, 0.17);
-  --shadow-sm: 0 14px 32px rgba(72, 48, 58, 0.13);
-  --radius-xl: 34px;
-  --radius-lg: 24px;
-  --radius-md: 18px;
-  --radius-sm: 12px;
-  --max-width: 1180px;
-  --transition: 0.24s ease;
+  --paper: oklch(97.2% 0.012 90);
+  --paper-warm: oklch(94.5% 0.02 95);
+  --paper-soft: oklch(98.5% 0.008 92);
+  --ink: oklch(28% 0.028 50);
+  --ink-soft: oklch(42% 0.03 52);
+  --ink-muted: oklch(58% 0.025 55);
+  --line: oklch(40% 0.03 50 / 0.14);
+  --line-strong: oklch(40% 0.03 50 / 0.28);
+  --peach: oklch(72% 0.1 35);
+  --peach-strong: oklch(55% 0.11 32);
+  --rose: oklch(82% 0.06 20);
+  --honey: oklch(90% 0.05 90);
+  --leaf: oklch(58% 0.075 145);
+  --leaf-deep: oklch(42% 0.065 145);
+  --sky: oklch(72% 0.05 220);
+  --violet: oklch(68% 0.07 300);
+  --moon-night: oklch(32% 0.04 280);
+  --moon-night-deep: oklch(24% 0.03 280);
+  --moon-haze: oklch(50% 0.04 280 / 0.12);
+  --moon-glow: oklch(92% 0.04 90 / 0.4);
+  --petal-shadow: oklch(40% 0.04 30 / 0.1);
+  --meteor-shadow: oklch(30% 0.03 280 / 0.1);
+  --shadow-lg: 0 18px 48px oklch(30% 0.03 50 / 0.1);
+  --shadow-md: 0 10px 28px oklch(30% 0.03 50 / 0.08);
+  --shadow-sm: 0 4px 14px oklch(30% 0.03 50 / 0.06);
+  --radius-xl: 20px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --max-width: 1080px;
+  --transition: 0.22s ease;
 }
 
 *,
@@ -54,73 +54,26 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  background: radial-gradient(
-      ellipse at 50% -18%,
-      rgba(60, 49, 95, 0.5),
-      rgba(60, 49, 95, 0.16) 34%,
-      transparent 60%
-    ),
-    radial-gradient(
-      circle at 12% 6%,
-      rgba(255, 184, 200, 0.44),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 88% 10%,
-      rgba(255, 239, 188, 0.34),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 58% 34%,
-      rgba(132, 185, 130, 0.2),
-      transparent 30%
-    ),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.28) 25%, transparent 25%) 0 0 /
-      34px 34px,
-    linear-gradient(180deg, #f5eafa 0%, #fff4e7 35%, #ffe9d6 68%, #f6efe2 100%);
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    var(--paper-warm);
+  background-size: 28px 28px, 28px 28px, auto;
   color: var(--ink-soft);
-  font-family: "LXGW WenKai Screen", "HYWenHei", "Microsoft JhengHei",
-    "Noto Serif SC", "Songti SC", serif;
+  font-family: "Microsoft YaHei", "Noto Sans SC", "PingFang SC", sans-serif;
   line-height: 1.68;
 }
 
+/* 默认不画光斑；page-home / page-list 再铺手账纸纹 */
 body::before,
 body::after {
   content: "";
   position: fixed;
   pointer-events: none;
   z-index: -2;
-  border-radius: 999px;
-  filter: blur(16px);
-}
-
-body::before {
-  width: 560px;
-  height: 560px;
-  left: -210px;
-  top: 120px;
-  background: repeating-conic-gradient(
-      from 18deg,
-      rgba(255, 159, 140, 0.14) 0 9deg,
-      transparent 9deg 18deg
-    ),
-    radial-gradient(circle, rgba(255, 250, 239, 0.88), transparent 64%);
-  opacity: 0.9;
-}
-
-body::after {
-  width: 480px;
-  height: 480px;
-  right: -132px;
-  bottom: 64px;
-  background: radial-gradient(circle at 42% 36%, var(--moon-glow), transparent 31%),
-    repeating-conic-gradient(
-      from -24deg,
-      rgba(132, 185, 130, 0.13) 0 10deg,
-      transparent 10deg 20deg
-    ),
-    radial-gradient(circle, rgba(248, 242, 255, 0.78), transparent 62%);
-  opacity: 0.84;
+  width: 0;
+  height: 0;
+  opacity: 0;
 }
 
 a {
@@ -139,7 +92,7 @@ input {
 }
 
 ::selection {
-  background: rgba(238, 109, 93, 0.22);
+  background: oklch(58% 0.075 145 / 0.22);
   color: var(--ink);
 }
 
@@ -657,24 +610,19 @@ input {
 
 .nav-inner {
   width: min(var(--max-width), 100%);
-  min-height: 76px;
+  min-height: 60px;
   margin: 0 auto;
-  padding: 14px 18px;
+  padding: 10px 14px 10px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.74);
-  border-radius: 28px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 252, 246, 0.8),
-    rgba(248, 241, 255, 0.68)
-  );
-  box-shadow: 0 18px 48px rgba(61, 39, 62, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+  gap: 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: oklch(98.5% 0.008 92 / 0.92);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .nav-brand {
@@ -685,20 +633,16 @@ input {
 }
 
 .nav-brand-mark {
-  width: 46px;
-  height: 46px;
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
-  border-radius: 17px;
-  color: #fffaf0;
-  background: radial-gradient(
-      circle at 35% 30%,
-      rgba(255, 255, 255, 0.7),
-      transparent 28%
-    ),
-    linear-gradient(135deg, var(--peach), var(--leaf));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    0 12px 22px rgba(238, 109, 93, 0.18);
+  border: 1px solid var(--leaf-deep);
+  border-radius: 50%;
+  color: var(--paper-soft);
+  background: var(--leaf);
+  box-shadow: none;
+  font-size: 0.85rem;
 }
 
 .nav-brand-copy {
@@ -709,10 +653,10 @@ input {
 
 .nav-brand-title {
   color: var(--ink);
-  font-family: "ZCOOL XiaoWei", "STKaiti", "KaiTi", serif;
-  font-size: 1.12rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }
 
 .nav-brand-subtitle {
@@ -743,17 +687,17 @@ input {
 .nav-links a:hover,
 .nav-links a:focus-visible {
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.64);
+  background: var(--honey);
   border-color: var(--line);
-  transform: translateY(-1px);
+  transform: none;
   outline: none;
 }
 
 .nav-links a.active {
-  color: #fffaf0;
-  background: linear-gradient(135deg, var(--peach-strong), var(--honey));
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 10px 24px rgba(238, 109, 93, 0.18);
+  color: var(--paper-soft);
+  background: var(--leaf-deep);
+  border-color: var(--leaf-deep);
+  box-shadow: none;
 }
 
 .home-shell {
