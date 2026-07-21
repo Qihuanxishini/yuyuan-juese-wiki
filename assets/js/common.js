@@ -54,32 +54,32 @@
     var META = {
       items: {
         label: "道具",
-        eyebrow: "Items Archive",
-        subtitle: "绾缘相关装备、背包、功能物件与专属配方部件。",
+        eyebrow: "道具图鉴",
+        subtitle: "工具、装备、容器、灯具、武器与专属科技站。",
         search: "搜索道具名称、用途或说明…",
         icon: "wanyuan_tools_tianhai.png",
         theme: "items",
       },
       food: {
-        label: "食物",
-        eyebrow: "Cuisine Compendium",
-        subtitle: "查看绾缘偏好的料理、专属甜点与数值信息。",
-        search: "搜索食物名称、效果或说明…",
+        label: "料理",
+        eyebrow: "花间料理",
+        subtitle: "甜点、饮品与恢复数值，方便对照配方和效果。",
+        search: "搜索料理名称、效果或说明…",
         icon: "wanyuan_taohuasu.png",
         theme: "food",
       },
       plants: {
         label: "植物",
-        eyebrow: "Garden Almanac",
-        subtitle: "整理植物成长信息、掉落物与花园相关资料。",
+        eyebrow: "花园植物",
+        subtitle: "生长时间、掉落物与种植相关说明。",
         search: "搜索植物名称、特性或说明…",
         icon: "wanyuan_orange_tree.png",
         theme: "plants",
       },
       materials: {
-        label: "其他",
-        eyebrow: "Field Notes",
-        subtitle: "汇总材料、掉落物与其他补充图鉴条目。",
+        label: "材料",
+        eyebrow: "材料与采集",
+        subtitle: "桃花、果实、孢子与结晶等材料的来源和用途。",
         search: "搜索名称、来源或说明…",
         icon: "crystal_of_glaze.png",
         theme: "materials",
@@ -88,7 +88,7 @@
     return (
       META[type] || {
         label: "",
-        eyebrow: "Archive",
+        eyebrow: "图鉴",
         subtitle: "",
         search: "搜索名称或说明…",
         icon: "wanyuan_taohua.png",
@@ -102,10 +102,10 @@
   var NAV_LINKS = [
     { label: "首页", type: "home", href: ROOT + "/index.html" },
     { label: "道具", type: "items", href: ROOT + "/items/index.html" },
-    { label: "食物", type: "food", href: ROOT + "/food/index.html" },
+    { label: "料理", type: "food", href: ROOT + "/food/index.html" },
     { label: "植物", type: "plants", href: ROOT + "/plants/index.html" },
     { label: "岛屿", type: "islands", href: ROOT + "/islands/index.html" },
-    { label: "其他", type: "materials", href: ROOT + "/materials/index.html" },
+    { label: "材料", type: "materials", href: ROOT + "/materials/index.html" },
   ];
 
   function renderNav(activeType) {
@@ -127,8 +127,8 @@
       '/index.html">' +
       '<span class="nav-brand-mark">✦</span>' +
       '<span class="nav-brand-copy">' +
-      '<span class="nav-brand-title">花仙子 Wiki</span>' +
-      '<span class="nav-brand-subtitle">Yuyuan Character Archive</span>' +
+      '<span class="nav-brand-title">花仙子图鉴</span>' +
+      '<span class="nav-brand-subtitle">玩家资料查阅</span>' +
       "</span>" +
       "</a>" +
       '<div class="nav-links">' +
@@ -612,6 +612,19 @@
 
   // ── 列表页 ────────────────────────────────────────────
 
+  function collectCategories(data) {
+    var cats = [];
+    var seen = {};
+    for (var i = 0; i < data.length; i++) {
+      var cat = data[i].category ? String(data[i].category) : "";
+      if (cat && !seen[cat]) {
+        seen[cat] = true;
+        cats.push(cat);
+      }
+    }
+    return cats;
+  }
+
   function initListPage(data, type) {
     setPageClasses("page-list", type);
     renderNav(type);
@@ -620,6 +633,24 @@
     if (!container) return;
 
     var meta = dataMeta(type);
+    var categories = collectCategories(data);
+    var activeCategory = "";
+
+    var filterHtml = "";
+    if (categories.length > 1) {
+      filterHtml =
+        '<div class="category-filter" id="category-filter" role="group" aria-label="按分类筛选">' +
+        '<button type="button" class="category-chip is-active" data-category="" aria-pressed="true">全部</button>';
+      for (var c = 0; c < categories.length; c++) {
+        filterHtml +=
+          '<button type="button" class="category-chip" data-category="' +
+          esc(categories[c]) +
+          '" aria-pressed="false">' +
+          esc(categories[c]) +
+          "</button>";
+      }
+      filterHtml += "</div>";
+    }
 
     container.innerHTML =
       '<section class="page-shell page-shell-list">' +
@@ -628,7 +659,7 @@
       ROOT +
       '/index.html">模组首页</a>' +
       '<span aria-hidden="true">/</span>' +
-      '<span>' +
+      "<span>" +
       esc(meta.label) +
       "图鉴</span>" +
       "</div>" +
@@ -647,7 +678,7 @@
       "</p>" +
       "</div>" +
       '<div class="page-banner-visual" aria-hidden="true">' +
-      '<span>' +
+      "<span>" +
       data.length +
       "</span>" +
       '<img src="' +
@@ -666,64 +697,75 @@
       "</span>" +
       "</label>" +
       "</header>" +
+      filterHtml +
       '<div class="list-register-head">' +
-      "<span>档案条目</span>" +
+      "<span>本页条目</span>" +
       '<span class="search-result-count" id="result-count" aria-live="polite"></span>' +
       "</div>" +
       '<div class="item-grid" id="item-list"></div>' +
       "</section>";
 
-    function renderList(keyword) {
+    function matchesKeyword(item, kw) {
+      if (!kw) return true;
+      var fields = [item.name, item.desc, item.obtain, item.usage, item.category];
+      for (var i = 0; i < fields.length; i++) {
+        if (fields[i] && String(fields[i]).toLowerCase().indexOf(kw) !== -1) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function renderList() {
       var itemList = document.getElementById("item-list");
       var resultCount = document.getElementById("result-count");
-      var kw = keyword ? keyword.toLowerCase() : "";
+      var searchInput = document.getElementById("search-input");
+      var kw =
+        searchInput && searchInput.value
+          ? searchInput.value.trim().toLowerCase()
+          : "";
       var filtered = [];
 
       for (var i = 0; i < data.length; i++) {
         var item = data[i];
-        var name = item.name ? String(item.name).toLowerCase() : "";
-        var desc = item.desc ? String(item.desc).toLowerCase() : "";
-        var obtain = item.obtain ? String(item.obtain).toLowerCase() : "";
-        var usage = item.usage ? String(item.usage).toLowerCase() : "";
-        if (
-          !kw ||
-          name.indexOf(kw) !== -1 ||
-          desc.indexOf(kw) !== -1 ||
-          obtain.indexOf(kw) !== -1 ||
-          usage.indexOf(kw) !== -1
-        ) {
+        if (activeCategory && String(item.category || "") !== activeCategory) {
+          continue;
+        }
+        if (matchesKeyword(item, kw)) {
           filtered.push(item);
         }
       }
 
       if (resultCount) {
-        resultCount.textContent = kw
-          ? "找到 " + filtered.length + " 项结果"
-          : "共 " + filtered.length + " 项内容";
+        if (kw || activeCategory) {
+          resultCount.textContent = "找到 " + filtered.length + " 项";
+        } else {
+          resultCount.textContent = "共 " + filtered.length + " 项内容";
+        }
       }
 
       if (filtered.length === 0) {
         itemList.innerHTML =
           '<div class="list-empty">' +
           "<strong>没有找到匹配内容</strong>" +
-          "<p>试试更短的关键词，或者切换到别的分类继续查看。</p>" +
+          "<p>试试更短的关键词，或切换上方分类再看一眼。</p>" +
           "</div>";
         return;
       }
 
       var html = "";
       for (var j = 0; j < filtered.length; j++) {
-        var item = filtered[j];
+        var row = filtered[j];
         var recordNumber = j < 9 ? "0" + (j + 1) : String(j + 1);
-        var encodedId = encodeURIComponent(item.id);
+        var encodedId = encodeURIComponent(row.id);
         var badges = "";
 
-        if (item.category) {
-          badges += badge(item.category, "ui-badge-soft");
+        if (row.category) {
+          badges += badge(row.category, "ui-badge-soft");
         }
 
-        if (item.skins && item.skins.length > 0) {
-          badges += badge("皮肤 " + item.skins.length, "ui-badge-accent");
+        if (row.skins && row.skins.length > 0) {
+          badges += badge("皮肤 " + row.skins.length, "ui-badge-accent");
         }
 
         if (!badges) {
@@ -739,9 +781,9 @@
           "</span>" +
           '<div class="item-card-media">' +
           '<img class="row-icon" src="' +
-          imgSrc(item.icon) +
+          imgSrc(row.icon) +
           '" alt="' +
-          esc(item.name || meta.label) +
+          esc(row.name || meta.label) +
           '" ' +
           onerr() +
           ">" +
@@ -749,12 +791,12 @@
           '<div class="item-card-body">' +
           '<div class="item-card-top">' +
           '<div class="row-name">' +
-          esc(item.name || "") +
+          esc(row.name || "") +
           "</div>" +
-          '<span class="row-arrow">翻阅 <b aria-hidden="true">↗</b></span>' +
+          '<span class="row-arrow">查看 <b aria-hidden="true">↗</b></span>' +
           "</div>" +
           '<p class="row-desc">' +
-          esc(item.desc || "暂无描述。") +
+          esc(row.desc || "暂无描述。") +
           "</p>" +
           '<div class="item-meta">' +
           badges +
@@ -766,15 +808,33 @@
       itemList.innerHTML = html;
     }
 
-    renderList("");
+    renderList();
 
     var searchInput = document.getElementById("search-input");
     if (searchInput) {
       searchInput.addEventListener("input", function () {
-        renderList(this.value.trim());
+        renderList();
+      });
+    }
+
+    var filter = document.getElementById("category-filter");
+    if (filter) {
+      filter.addEventListener("click", function (event) {
+        var button = event.target.closest(".category-chip");
+        if (!button || !filter.contains(button)) return;
+
+        activeCategory = button.getAttribute("data-category") || "";
+        var chips = filter.querySelectorAll(".category-chip");
+        for (var i = 0; i < chips.length; i++) {
+          var on = chips[i] === button;
+          chips[i].classList.toggle("is-active", on);
+          chips[i].setAttribute("aria-pressed", on ? "true" : "false");
+        }
+        renderList();
       });
     }
   }
+
 
   // ── 详情页 ────────────────────────────────────────────
 
@@ -792,6 +852,64 @@
     );
   }
 
+  function foodStatsSection(item) {
+    if (
+      item.hunger === undefined &&
+      item.health === undefined &&
+      item.sanity === undefined &&
+      item.perish === undefined
+    ) {
+      return "";
+    }
+
+    return (
+      '<section class="detail-section-card detail-section-stats">' +
+      '<div class="section-label">食用效果</div>' +
+      '<div class="stats-grid">' +
+      '<div class="stat-item"><span class="stat-label">饥饿</span><span class="stat-value">' +
+      esc(item.hunger) +
+      "</span></div>" +
+      '<div class="stat-item"><span class="stat-label">生命</span><span class="stat-value">' +
+      esc(item.health) +
+      "</span></div>" +
+      '<div class="stat-item"><span class="stat-label">精神</span><span class="stat-value">' +
+      esc(item.sanity) +
+      "</span></div>" +
+      '<div class="stat-item"><span class="stat-label">腐烂</span><span class="stat-value">' +
+      esc(item.perish) +
+      "</span></div>" +
+      "</div>" +
+      "</section>"
+    );
+  }
+
+  function materialStatsSection(item) {
+    if (
+      item.hunger === undefined &&
+      item.health === undefined &&
+      item.sanity === undefined
+    ) {
+      return "";
+    }
+
+    return (
+      '<section class="detail-section-card detail-section-stats">' +
+      '<div class="section-label">食用效果</div>' +
+      '<div class="stats-grid">' +
+      '<div class="stat-item"><span class="stat-label">饥饿</span><span class="stat-value">' +
+      esc(item.hunger) +
+      "</span></div>" +
+      '<div class="stat-item"><span class="stat-label">生命</span><span class="stat-value">' +
+      esc(item.health) +
+      "</span></div>" +
+      '<div class="stat-item"><span class="stat-label">精神</span><span class="stat-value">' +
+      esc(item.sanity) +
+      "</span></div>" +
+      "</div>" +
+      "</section>"
+    );
+  }
+
   function initDetailPage(data, type) {
     setPageClasses("page-detail", type);
     renderNav(type);
@@ -802,11 +920,12 @@
     var meta = dataMeta(type);
 
     function renderError() {
+      document.title = "内容未找到 — 花仙子图鉴";
       container.innerHTML =
         '<section class="page-shell page-shell-detail">' +
         '<div class="detail-error">' +
-        "<strong>内容不存在或 ID 无效</strong>" +
-        "<p>请返回上一页重新选择，或确认链接参数是否正确。</p>" +
+        "<strong>找不到这条内容</strong>" +
+        "<p>请返回列表重新选择，或检查链接是否完整。</p>" +
         '<a href="index.html">← 返回列表</a>' +
         "</div>" +
         "</section>";
@@ -831,15 +950,19 @@
       return;
     }
 
-    var detailCards = "";
-    detailCards += detailCard("获取方式", item.obtain);
-    detailCards += detailCard("用途", item.usage);
-    detailCards += detailCard("配方", item.recipe);
+    document.title = (item.name || meta.label) + " — 花仙子图鉴";
+
+    var infoCards = "";
+    infoCards += detailCard("获取方式", item.obtain);
+    infoCards += detailCard("怎么用", item.usage);
+    infoCards += detailCard("配方", item.recipe);
 
     if (type === "plants") {
-      detailCards += detailCard("生长时间", item.grow_time);
-      detailCards += detailCard("掉落物", item.drop);
+      infoCards += detailCard("生长时间", item.grow_time);
+      infoCards += detailCard("掉落物", item.drop);
     }
+
+    var categoryLabel = item.category || meta.label;
 
     var html =
       '<section class="page-shell page-shell-detail">' +
@@ -864,8 +987,8 @@
       '<header class="detail-header">' +
       '<div class="detail-icon-wrap">' +
       '<span class="detail-record-mark">' +
-      esc(meta.label) +
-      "档案</span>" +
+      esc(categoryLabel) +
+      "</span>" +
       '<img class="detail-icon" src="' +
       imgSrc(item.icon) +
       '" alt="' +
@@ -883,9 +1006,11 @@
       "</h1>" +
       '<div class="detail-meta">' +
       '<span class="detail-category">' +
-      esc(item.category || meta.label) +
+      esc(categoryLabel) +
       "</span>" +
-      badge(meta.label, "ui-badge-soft") +
+      (item.skins && item.skins.length
+        ? badge("皮肤 " + item.skins.length, "ui-badge-accent")
+        : "") +
       "</div>" +
       '<p class="detail-summary">' +
       esc(item.desc || "暂无描述。") +
@@ -894,27 +1019,19 @@
       "</header>" +
       '<div class="detail-content">';
 
-    if (detailCards) {
-      html += '<div class="detail-grid">' + detailCards + "</div>";
+    // 料理/可食用材料：先看数值，再看获取与用法
+    if (type === "food") {
+      html += foodStatsSection(item);
+    } else if (type === "materials") {
+      html += materialStatsSection(item);
     }
 
-    if (type === "food") {
+    if (infoCards) {
       html +=
-        '<section class="detail-section-card">' +
-        '<div class="section-label">属性</div>' +
-        '<div class="stats-grid">' +
-        '<div class="stat-item"><span class="stat-label">饥饿</span><span class="stat-value">' +
-        esc(item.hunger) +
-        "</span></div>" +
-        '<div class="stat-item"><span class="stat-label">生命</span><span class="stat-value">' +
-        esc(item.health) +
-        "</span></div>" +
-        '<div class="stat-item"><span class="stat-label">精神</span><span class="stat-value">' +
-        esc(item.sanity) +
-        "</span></div>" +
-        '<div class="stat-item"><span class="stat-label">腐烂</span><span class="stat-value">' +
-        esc(item.perish) +
-        "</span></div>" +
+        '<section class="detail-section-card detail-section-guide">' +
+        '<div class="section-label">查阅要点</div>' +
+        '<div class="detail-grid detail-grid-nested">' +
+        infoCards +
         "</div>" +
         "</section>";
     }
@@ -946,7 +1063,7 @@
           paidTag +
           "</div>" +
           '<div class="skin-desc">' +
-          esc(skin.desc || "皮肤外观展示。") +
+          esc(skin.desc || "外观皮肤。") +
           "</div>" +
           "</div>" +
           "</div>";
@@ -954,7 +1071,7 @@
 
       html +=
         '<section class="detail-section-card">' +
-        '<div class="section-label">皮肤</div>' +
+        '<div class="section-label">可选皮肤</div>' +
         '<div class="skin-list">' +
         skinsHtml +
         "</div>" +
@@ -965,6 +1082,7 @@
 
     container.innerHTML = html;
   }
+
 
   // ── 对外暴露 ──────────────────────────────────────────
 
