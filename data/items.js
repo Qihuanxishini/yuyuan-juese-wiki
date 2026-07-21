@@ -185,6 +185,25 @@ var ITEMS_DATA = [
     skins: [],
   },
   {
+    id: "wanyuan_rabbit_icebox",
+    name: "兔子冰盒",
+    icon: "wanyuan_rabbit_icebox.png",
+    category: "容器",
+    desc: "兔子冰盒，兔子外形的随身冰箱。可放在物品栏中直接打开，共2页×36格=72格，仅可存放食物（不含小生物）与带冰箱兼容标签的物品；食物永不腐烂（保鲜倍率0）。带有冰箱标签，内置一键放入物品按钮。角色出生时自带一个。",
+    obtain: "角色出生自带；也可花仙子专属合成（需科学机器）",
+    usage:
+      "物品栏中打开使用（2页共72格）；仅限食物；食物永不腐烂；一键放入；带冰箱标签",
+    recipe: "彩虹宝石 x1，蓝宝石 x5，石砖 x7，齿轮 x3，冰块 x10",
+    skins: [
+      {
+        name: "草莓心意",
+        icon: "wanyuan_rabbit_icebox_skin_strawberry.png",
+        desc: "付费皮肤，包括一整套美术",
+        paid: true,
+      },
+    ],
+  },
+  {
     id: "wanyuan_table",
     name: "小餐桌",
     icon: "wanyuan_table.png",
@@ -223,6 +242,18 @@ var ITEMS_DATA = [
     usage:
       "对目标使用：按耐久比例返还配方材料；自动清空容器/收获作物；花仙子冷却2秒，其他角色8秒",
     recipe: "桃花 x35，金块 x15，兔子 x2",
+    skins: [],
+  },
+  {
+    id: "wy_water_umbrella",
+    name: "橙橙雨伞",
+    icon: "wy_water_umbrella.png",
+    category: "工具",
+    desc: "橙橙雨伞，手持装备时防雷击、防酸雨、防月亮冰雹，同时会持续增加自身潮湿度。放到地上开伞后，每5秒为周围约10格内的耕地浇水（每次+10水分）。无耐久消耗。",
+    obtain: "花仙子专属合成（无需科技台）",
+    usage:
+      "手持：防雷/防酸雨/防冰雹，并增加潮湿度；放置地上后开关伞：周期性为周围耕地浇水（半径约10，每5秒+10水分）",
+    recipe: "圆圆橘子 x3，猪皮 x2，树枝 x3",
     skins: [],
   },
   {
