@@ -106,6 +106,7 @@
     { label: "植物", type: "plants", href: ROOT + "/plants/index.html" },
     { label: "岛屿", type: "islands", href: ROOT + "/islands/index.html" },
     { label: "材料", type: "materials", href: ROOT + "/materials/index.html" },
+    { label: "枢纽", type: "hub", href: ROOT + "/hub/index.html" },
   ];
 
   function renderNav(activeType) {

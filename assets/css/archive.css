@@ -51,6 +51,12 @@ body.page-islands {
   --j-accent-soft: oklch(93% 0.025 200);
 }
 
+body.page-hub {
+  --j-accent: oklch(72% 0.1 70);
+  --j-accent-deep: oklch(48% 0.09 65);
+  --j-accent-soft: oklch(95% 0.03 80);
+}
+
 body.page-list::before,
 body.page-detail::before {
   content: "";

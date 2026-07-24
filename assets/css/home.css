@@ -808,6 +808,33 @@
   transform: rotate(6deg);
 }
 
+.archive-hub {
+  grid-column: 1 / -1;
+  min-height: 180px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(140px, 0.45fr);
+  align-items: center;
+  padding: 22px 24px;
+  background:
+    linear-gradient(160deg, oklch(78% 0.08 70 / 0.14), transparent 55%),
+    var(--j-paper);
+}
+
+.archive-hub .archive-copy {
+  max-width: 52ch;
+}
+
+.archive-hub > img {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 120px);
+  height: 120px;
+  justify-self: end;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px oklch(30% 0.03 50 / 0.1));
+  transform: rotate(-4deg);
+}
+
 /* ── 快捷查阅 ── */
 .journey-section {
   display: grid;
@@ -1101,7 +1128,8 @@
   .archive-food,
   .archive-plants,
   .archive-island,
-  .archive-materials {
+  .archive-materials,
+  .archive-hub {
     grid-column: 1 / -1;
     grid-row: auto;
   }
