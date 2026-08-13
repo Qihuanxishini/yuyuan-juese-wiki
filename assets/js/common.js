@@ -636,6 +636,7 @@
     var meta = dataMeta(type);
     var categories = collectCategories(data);
     var activeCategory = "";
+    var visibleItems = [];
 
     var filterHtml = "";
     if (categories.length > 1) {
@@ -745,6 +746,8 @@
         }
       }
 
+      visibleItems = filtered;
+
       if (filtered.length === 0) {
         itemList.innerHTML =
           '<div class="list-empty">' +
@@ -774,7 +777,9 @@
         }
 
         html +=
-          '<a class="item-card" href="detail.html?id=' +
+          '<a class="item-card" data-id="' +
+          esc(row.id) +
+          '" href="detail.html?id=' +
           encodedId +
           '">' +
           '<span class="item-card-index" aria-hidden="true">' +
@@ -834,6 +839,303 @@
         renderList();
       });
     }
+
+    // ── 详情浮层 ──────────────────────────────────────────
+    // [喵喵喵]: 详情不再整页跳转，改为在列表之上开浮层；列表 DOM 不卸载，
+    // 关闭后搜索词、分类筛选和滚动位置天然保持原样
+
+    var overlay = document.createElement("div");
+    overlay.className = "detail-overlay";
+    overlay.hidden = true;
+    overlay.innerHTML =
+      '<div class="detail-overlay-backdrop" data-overlay-close></div>' +
+      '<div class="detail-overlay-panel" role="dialog" aria-modal="true" aria-labelledby="detail-title-heading" tabindex="-1">' +
+      '<div class="detail-overlay-bar">' +
+      '<button type="button" class="overlay-back" data-overlay-close>' +
+      '<span aria-hidden="true">←</span> 返回' +
+      esc(meta.label) +
+      "</button>" +
+      '<div class="overlay-steps">' +
+      '<button type="button" class="overlay-step" data-overlay-step="-1">' +
+      '<span aria-hidden="true">‹</span> 上一条</button>' +
+      '<span class="overlay-position" aria-live="polite"></span>' +
+      '<button type="button" class="overlay-step" data-overlay-step="1">' +
+      '下一条 <span aria-hidden="true">›</span></button>' +
+      "</div>" +
+      '<button type="button" class="overlay-close" data-overlay-close aria-label="关闭详情">' +
+      '<span aria-hidden="true">✕</span></button>' +
+      "</div>" +
+      '<div class="detail-overlay-body"></div>' +
+      "</div>";
+    document.body.appendChild(overlay);
+
+    var overlayPanel = overlay.querySelector(".detail-overlay-panel");
+    var overlayBody = overlay.querySelector(".detail-overlay-body");
+    var overlayPosition = overlay.querySelector(".overlay-position");
+    var overlaySteps = overlay.querySelectorAll(".overlay-step");
+    var baseTitle = document.title;
+    var overlayOpen = false;
+    var overlayOwnsHistory = false;
+    var overlayItem = null;
+    var overlayNavList = data;
+    var lastTrigger = null;
+    var recentTimer = 0;
+    var closeTimer = 0;
+
+    function findItem(id) {
+      for (var i = 0; i < data.length; i++) {
+        if (String(data[i].id) === String(id)) return data[i];
+      }
+      return null;
+    }
+
+    function findCard(id) {
+      var cards = document.querySelectorAll("#item-list .item-card");
+      for (var i = 0; i < cards.length; i++) {
+        if (cards[i].getAttribute("data-id") === String(id)) return cards[i];
+      }
+      return null;
+    }
+
+    function detailUrl(id) {
+      var query = id ? "?id=" + encodeURIComponent(id) : "";
+      return window.location.pathname + query;
+    }
+
+    function lockScroll() {
+      var gap = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.overflow = "hidden";
+      if (gap > 0) document.body.style.paddingRight = gap + "px";
+    }
+
+    function unlockScroll() {
+      document.documentElement.style.overflow = "";
+      document.body.style.paddingRight = "";
+    }
+
+    // [喵喵喵]: 浮层打开时让底层内容退出可访问性树和 Tab 序列，避免焦点漏到背景
+    function setBackgroundInert(on) {
+      var nodes = [document.getElementById("main-nav"), container];
+      for (var i = 0; i < nodes.length; i++) {
+        if (!nodes[i]) continue;
+        if (on) {
+          nodes[i].setAttribute("aria-hidden", "true");
+          nodes[i].setAttribute("inert", "");
+        } else {
+          nodes[i].removeAttribute("aria-hidden");
+          nodes[i].removeAttribute("inert");
+        }
+      }
+    }
+
+    // [喵喵喵]: 翻页顺序跟随当前筛选结果；直链条目可能不在筛选里，退回完整数据顺序
+    function pickNavList(item) {
+      return visibleItems.indexOf(item) !== -1 ? visibleItems : data;
+    }
+
+    function renderOverlay(item) {
+      overlayItem = item;
+      overlayBody.innerHTML = buildDetailBody(item, type, meta);
+      overlayPanel.scrollTop = 0;
+      document.title = (item.name || meta.label) + " — 绾缘花仙子";
+
+      var index = overlayNavList.indexOf(item);
+      if (overlayPosition) {
+        overlayPosition.textContent =
+          index === -1 ? "" : index + 1 + " / " + overlayNavList.length;
+      }
+      for (var i = 0; i < overlaySteps.length; i++) {
+        var step = parseInt(
+          overlaySteps[i].getAttribute("data-overlay-step"),
+          10
+        );
+        var target = index === -1 ? -1 : index + step;
+        overlaySteps[i].disabled = target < 0 || target >= overlayNavList.length;
+      }
+    }
+
+    // mode: push（点卡片）/ pop（浏览器前进后退）/ initial（带 id 直接打开页面）
+    function openOverlay(id, mode) {
+      var item = findItem(id);
+      if (!item) {
+        if (mode !== "push") {
+          window.history.replaceState({}, "", detailUrl(""));
+        }
+        return;
+      }
+
+      if (mode === "push") {
+        window.history.pushState(
+          { overlayId: String(item.id) },
+          "",
+          detailUrl(item.id)
+        );
+        overlayOwnsHistory = true;
+      } else if (mode === "pop") {
+        overlayOwnsHistory = true;
+      } else {
+        window.history.replaceState(
+          { overlayId: String(item.id) },
+          "",
+          detailUrl(item.id)
+        );
+        overlayOwnsHistory = false;
+      }
+
+      overlayNavList = pickNavList(item);
+      renderOverlay(item);
+
+      if (overlayOpen) return;
+
+      overlayOpen = true;
+      window.clearTimeout(closeTimer);
+      overlay.hidden = false;
+      lockScroll();
+      setBackgroundInert(true);
+      void overlay.offsetWidth;
+      overlay.classList.add("is-open");
+      overlayPanel.focus();
+    }
+
+    function markRecent(card) {
+      var marked = document.querySelectorAll("#item-list .item-card.is-recent");
+      for (var i = 0; i < marked.length; i++) {
+        marked[i].classList.remove("is-recent");
+      }
+      window.clearTimeout(recentTimer);
+      card.classList.add("is-recent");
+      recentTimer = window.setTimeout(function () {
+        card.classList.remove("is-recent");
+      }, 2600);
+    }
+
+    function closeOverlay() {
+      if (!overlayOpen) return;
+
+      overlayOpen = false;
+      overlay.classList.remove("is-open");
+      unlockScroll();
+      setBackgroundInert(false);
+      document.title = baseTitle;
+      closeTimer = window.setTimeout(function () {
+        overlay.hidden = true;
+      }, 240);
+
+      var card = overlayItem ? findCard(overlayItem.id) : null;
+      overlayItem = null;
+      if (!card) return;
+
+      // [喵喵喵]: 回到列表后把刚看过的条目带回视野并短暂高亮，长列表里不用重新找
+      var rect = card.getBoundingClientRect();
+      if (rect.top < 80 || rect.bottom > window.innerHeight - 24) {
+        card.scrollIntoView({ block: "center" });
+      }
+      if (card === lastTrigger) card.focus({ preventScroll: true });
+      markRecent(card);
+    }
+
+    // [喵喵喵]: 关闭统一经过历史栈，让浏览器返回键和页面上的关闭按钮结果一致
+    function requestClose() {
+      if (!overlayOpen) return;
+      if (overlayOwnsHistory) {
+        window.history.back();
+      } else {
+        window.history.replaceState({}, "", detailUrl(""));
+        closeOverlay();
+      }
+    }
+
+    function stepOverlay(offset) {
+      if (!overlayOpen || !overlayItem) return;
+      var index = overlayNavList.indexOf(overlayItem);
+      if (index === -1) return;
+      var next = overlayNavList[index + offset];
+      if (!next) return;
+
+      // [喵喵喵]: 相邻条目切换用 replaceState，历史里只占一条，返回一次就回到列表
+      window.history.replaceState(
+        { overlayId: String(next.id) },
+        "",
+        detailUrl(next.id)
+      );
+      renderOverlay(next);
+    }
+
+    function trapFocus(event) {
+      var focusable = overlayPanel.querySelectorAll(
+        'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      var active = document.activeElement;
+
+      if (event.shiftKey && (active === first || active === overlayPanel)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    overlay.addEventListener("click", function (event) {
+      if (event.target.closest("[data-overlay-close]")) {
+        requestClose();
+        return;
+      }
+      var step = event.target.closest("[data-overlay-step]");
+      if (step) {
+        stepOverlay(parseInt(step.getAttribute("data-overlay-step"), 10));
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (!overlayOpen) return;
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+        requestClose();
+      } else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        stepOverlay(-1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        stepOverlay(1);
+      } else if (event.key === "Tab") {
+        trapFocus(event);
+      }
+    });
+
+    var itemList = document.getElementById("item-list");
+    if (itemList) {
+      // [喵喵喵]: 卡片 href 保留指向 detail.html，新标签页打开和复制链接仍然可用
+      itemList.addEventListener("click", function (event) {
+        if (event.defaultPrevented || event.button !== 0) return;
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+          return;
+        }
+        var card = event.target.closest(".item-card");
+        if (!card) return;
+
+        event.preventDefault();
+        lastTrigger = card;
+        openOverlay(card.getAttribute("data-id"), "push");
+      });
+    }
+
+    window.addEventListener("popstate", function () {
+      var currentId = getParam("id");
+      if (currentId) {
+        openOverlay(currentId, "pop");
+      } else {
+        closeOverlay();
+      }
+    });
+
+    var initialId = getParam("id");
+    if (initialId) openOverlay(initialId, "initial");
   }
 
 
@@ -911,48 +1213,8 @@
     );
   }
 
-  function initDetailPage(data, type) {
-    setPageClasses("page-detail", type);
-    renderNav(type);
-
-    var container = document.getElementById("detail-container");
-    if (!container) return;
-
-    var meta = dataMeta(type);
-
-    function renderError() {
-      document.title = "找不到内容 — 绾缘花仙子";
-      container.innerHTML =
-        '<section class="page-shell page-shell-detail">' +
-        '<div class="detail-error">' +
-        "<strong>找不到这条内容</strong>" +
-        "<p>换个链接再试，或回到列表挑一条。</p>" +
-        '<a href="index.html">← 返回列表</a>' +
-        "</div>" +
-        "</section>";
-    }
-
-    var id = getParam("id");
-    if (id === null) {
-      renderError();
-      return;
-    }
-
-    var item = null;
-    for (var i = 0; i < data.length; i++) {
-      if (String(data[i].id) === String(id)) {
-        item = data[i];
-        break;
-      }
-    }
-
-    if (!item) {
-      renderError();
-      return;
-    }
-
-    document.title = (item.name || meta.label) + " — 绾缘花仙子";
-
+  // [喵喵喵]: 详情主体（图标头 + 内容区）由独立详情页和列表浮层共用，保证两条入口结构一致
+  function buildDetailBody(item, type, meta) {
     var infoCards = "";
     infoCards += detailCard("获取方式", item.obtain);
     infoCards += detailCard("怎么用", item.usage);
@@ -966,25 +1228,6 @@
     var categoryLabel = item.category || meta.label;
 
     var html =
-      '<section class="page-shell page-shell-detail">' +
-      '<div class="archive-breadcrumb">' +
-      '<a href="' +
-      ROOT +
-      '/index.html">首页</a>' +
-      '<span aria-hidden="true">/</span>' +
-      '<a href="index.html">' +
-      esc(meta.label) +
-      "</a>" +
-      '<span aria-hidden="true">/</span>' +
-      '<span aria-current="page">' +
-      esc(item.name || "详情") +
-      "</span>" +
-      "</div>" +
-      '<div class="detail-back-wrap">' +
-      '<a class="detail-back" href="index.html"><span aria-hidden="true">←</span> 返回' +
-      esc(meta.label) +
-      "</a>" +
-      "</div>" +
       '<header class="detail-header">' +
       '<div class="detail-icon-wrap">' +
       '<span class="detail-record-mark">' +
@@ -1002,7 +1245,7 @@
       '<div class="page-eyebrow">' +
       esc(meta.eyebrow) +
       "</div>" +
-      "<h1>" +
+      '<h1 id="detail-title-heading">' +
       esc(item.name || "") +
       "</h1>" +
       '<div class="detail-meta">' +
@@ -1079,9 +1322,79 @@
         "</section>";
     }
 
-    html += "</div>" + "</section>";
+    return html + "</div>";
+  }
 
-    container.innerHTML = html;
+  function initDetailPage(data, type) {
+    setPageClasses("page-detail", type);
+    renderNav(type);
+
+    var container = document.getElementById("detail-container");
+    if (!container) return;
+
+    var meta = dataMeta(type);
+
+    function renderError() {
+      document.title = "找不到内容 — 绾缘花仙子";
+      container.innerHTML =
+        '<section class="page-shell page-shell-detail">' +
+        '<div class="detail-error">' +
+        "<strong>找不到这条内容</strong>" +
+        "<p>换个链接再试，或回到列表挑一条。</p>" +
+        '<a href="index.html">← 返回列表</a>' +
+        "</div>" +
+        "</section>";
+    }
+
+    var id = getParam("id");
+    if (id === null) {
+      renderError();
+      return;
+    }
+
+    var item = null;
+    for (var i = 0; i < data.length; i++) {
+      if (String(data[i].id) === String(id)) {
+        item = data[i];
+        break;
+      }
+    }
+
+    if (!item) {
+      renderError();
+      return;
+    }
+
+    document.title = (item.name || meta.label) + " — 绾缘花仙子";
+
+    container.innerHTML =
+      '<section class="page-shell page-shell-detail">' +
+      '<div class="archive-breadcrumb">' +
+      '<a href="' +
+      ROOT +
+      '/index.html">首页</a>' +
+      '<span aria-hidden="true">/</span>' +
+      '<a href="index.html">' +
+      esc(meta.label) +
+      "</a>" +
+      '<span aria-hidden="true">/</span>' +
+      '<span aria-current="page">' +
+      esc(item.name || "详情") +
+      "</span>" +
+      "</div>" +
+      '<div class="detail-back-wrap">' +
+      '<a class="detail-back" href="index.html"><span aria-hidden="true">←</span> 返回' +
+      esc(meta.label) +
+      "</a>" +
+      "</div>" +
+      buildDetailBody(item, type, meta) +
+      // [喵喵喵]: 长条目看到底部时不必滚回顶部才能返回列表
+      '<div class="detail-back-wrap detail-back-bottom">' +
+      '<a class="detail-back" href="index.html"><span aria-hidden="true">←</span> 返回' +
+      esc(meta.label) +
+      "</a>" +
+      "</div>" +
+      "</section>";
   }
 
 
