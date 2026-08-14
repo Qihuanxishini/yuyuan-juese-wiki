@@ -72,10 +72,12 @@ body.page-detail::before {
   filter: none;
   opacity: 1;
   background:
+    radial-gradient(680px 440px at 86% -6%, var(--glow-honey), transparent 68%),
+    radial-gradient(760px 540px at -8% 106%, var(--glow-sky), transparent 66%),
     linear-gradient(var(--j-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--j-line) 1px, transparent 1px),
     var(--j-paper-tint);
-  background-size: 28px 28px, 28px 28px, auto;
+  background-size: auto, auto, 28px 28px, 28px 28px, auto;
 }
 
 body.page-list::after,
@@ -153,7 +155,7 @@ body.page-detail::after {
 .page-list .nav-brand-title,
 .page-detail .nav-brand-title {
   color: var(--j-ink);
-  font-family: "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: 1.08rem;
   letter-spacing: 0.1em;
 }
@@ -245,6 +247,16 @@ body.page-detail::after {
   border-radius: var(--j-radius-lg);
   color: var(--j-ink);
   background:
+    radial-gradient(
+      480px 260px at 96% -6%,
+      color-mix(in oklch, var(--j-accent-soft) 88%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      380px 280px at -4% 108%,
+      color-mix(in oklch, var(--j-accent-soft) 72%, transparent),
+      transparent 74%
+    ),
     repeating-linear-gradient(
       transparent 0 31px,
       oklch(55% 0.04 200 / 0.08) 31px 32px
@@ -317,7 +329,7 @@ body.page-detail::after {
 .page-islands .page-title {
   margin: 0 0 10px;
   color: var(--j-ink);
-  font-family: "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: clamp(2rem, 4vw, 2.8rem);
   font-weight: 700;
   line-height: 1.1;
@@ -397,7 +409,7 @@ body.page-detail::after {
 
 .page-list .search-label {
   color: var(--j-ink);
-  font-family: "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: 1rem;
   font-weight: 700;
 }
@@ -489,7 +501,7 @@ body.page-detail::after {
 }
 
 .list-register-head > span:first-child {
-  font-family: "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: 1.2rem;
 }
 
@@ -543,8 +555,14 @@ body.page-detail::after {
   z-index: 2;
   border-color: var(--j-accent);
   background: var(--j-accent-soft);
-  box-shadow: var(--j-shadow);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift, var(--j-shadow));
+  transform: translateY(-3px);
+}
+
+.page-list .item-card:hover .item-card-media,
+.page-list .item-card:focus-visible .item-card-media {
+  border-color: color-mix(in oklch, var(--j-accent) 55%, transparent);
+  background: var(--j-paper-soft);
 }
 
 .item-card-index {
@@ -579,6 +597,12 @@ body.page-detail::after {
   height: 56px;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px oklch(30% 0.03 50 / 0.1));
+  transition: scale 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-list .item-card:hover .row-icon,
+.page-list .item-card:focus-visible .row-icon {
+  scale: 1.1;
 }
 
 .page-list .item-card-body,
@@ -594,7 +618,7 @@ body.page-detail::after {
 .page-list .row-name,
 .page-islands .row-name {
   color: var(--j-ink);
-  font-family: "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: 1.12rem;
   font-weight: 700;
 }
@@ -607,6 +631,12 @@ body.page-detail::after {
   font-size: 0.72rem;
   font-weight: 700;
   white-space: nowrap;
+  transition: translate 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-list .item-card:hover .row-arrow,
+.page-list .item-card:focus-visible .row-arrow {
+  translate: 3px 0;
 }
 
 .page-list .row-desc,
@@ -670,7 +700,7 @@ body.page-detail::after {
 .page-list .list-empty strong,
 .page-detail .detail-error strong {
   color: var(--j-ink);
-  font-family: "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: 1.2rem;
 }
 
@@ -717,6 +747,16 @@ body.page-detail::after {
   border-radius: var(--j-radius-lg);
   color: var(--j-ink);
   background:
+    radial-gradient(
+      480px 260px at 96% -6%,
+      color-mix(in oklch, var(--j-accent-soft) 88%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      380px 280px at -4% 108%,
+      color-mix(in oklch, var(--j-accent-soft) 72%, transparent),
+      transparent 74%
+    ),
     repeating-linear-gradient(
       transparent 0 31px,
       oklch(55% 0.04 200 / 0.08) 31px 32px
@@ -762,8 +802,24 @@ body.page-detail::after {
   padding: 20px;
   border: 1px solid var(--j-line-strong);
   border-radius: 50%;
-  background: var(--j-accent-soft);
+  background:
+    radial-gradient(
+      circle at 50% 34%,
+      color-mix(in oklch, var(--j-paper-soft) 70%, white),
+      transparent 72%
+    ),
+    var(--j-accent-soft);
   transform: none;
+}
+
+/* 手绘感虚线外圈，像手账里的圆形相框 */
+.page-detail .detail-icon-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+  border: 1.5px dashed color-mix(in oklch, var(--j-accent) 45%, transparent);
+  pointer-events: none;
 }
 
 .detail-record-mark {
@@ -797,7 +853,7 @@ body.page-detail::after {
   max-width: 18ch;
   margin: 0;
   color: var(--j-ink);
-  font-family: "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: clamp(2rem, 4vw, 2.8rem);
   font-weight: 700;
   line-height: 1.1;
@@ -897,9 +953,10 @@ body.page-detail::after {
 }
 
 .page-detail .stat-value {
-  color: var(--j-ink);
-  font-family: Georgia, serif;
-  font-size: 1.25rem;
+  color: var(--j-accent-deep);
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  font-weight: 700;
 }
 
 .page-detail .skin-list {
@@ -1228,6 +1285,8 @@ body.page-detail::after {
 
 @media (prefers-reduced-motion: reduce) {
   .page-list .item-card,
+  .page-list .item-card .row-icon,
+  .page-list .row-arrow,
   .page-detail .detail-back,
   .page-islands .item-card {
     animation: none !important;
@@ -1237,5 +1296,13 @@ body.page-detail::after {
   .page-list .item-card:hover,
   .page-list .item-card:focus-visible {
     transform: none;
+  }
+
+  .page-list .item-card:hover .row-icon,
+  .page-list .item-card:focus-visible .row-icon,
+  .page-list .item-card:hover .row-arrow,
+  .page-list .item-card:focus-visible .row-arrow {
+    scale: none;
+    translate: none;
   }
 }

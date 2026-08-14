@@ -611,6 +611,71 @@
     document.body.appendChild(layer);
   }
 
+
+  // ── 滚动进入动画 ──────────────────────────────────
+  // [喵喵喵]: reveal 类由 JS 确认可动画后才挂上；脚本异常、reduce 或无 IO 时
+  // 直接跳过，内容保持可见。列表过滤会重写 innerHTML，新卡片不再挂类，
+  // 避免每次筛选都重新入场
+
+  var REVEAL_SELECTOR =
+    ".archive-link, .home-section-heading, .journey-copy, .journey-map, " +
+    ".home-credits, .page-banner, .search-panel, .item-card, " +
+    ".detail-header, .detail-card, .detail-section-card";
+
+  var revealObserver = null;
+
+  function prefersReducedMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function revealScope(scope) {
+    if (!scope || !document.body) return;
+    if (prefersReducedMotion() || !("IntersectionObserver" in window)) return;
+
+    if (!revealObserver) {
+      revealObserver = new IntersectionObserver(
+        function (entries, observer) {
+          for (var i = 0; i < entries.length; i++) {
+            if (entries[i].isIntersecting) {
+              entries[i].target.classList.add("reveal-in");
+              observer.unobserve(entries[i].target);
+            }
+          }
+        },
+        { rootMargin: "0px 0px -6% 0px", threshold: 0.06 }
+      );
+    }
+
+    var nodes = scope.querySelectorAll(REVEAL_SELECTOR);
+    var staggerIndex = 0;
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      if (node.classList.contains("reveal")) continue;
+      node.classList.add("reveal");
+      // 列表卡片与首页分类卡做瀑布式错峰，其余元素整块淡入
+      if (
+        node.classList.contains("item-card") ||
+        node.classList.contains("archive-link")
+      ) {
+        node.style.setProperty(
+          "--reveal-delay",
+          Math.min(staggerIndex * 45, 360) + "ms"
+        );
+        staggerIndex++;
+      }
+      // [喵喵喵]: 首屏元素同步触发（不押在 IO 回调时机上），
+      // 视口外的交给 IO 滚动时再进场；只看 top 是为了兼容
+      // 无布局环境（如 dump-dom）下 rect 全 0 的情况
+      // [喵喵喵]: 无渲染环境下 innerHeight 为 0，回退到常规视口高，保证首屏直接进场
+      var viewportH = window.innerHeight || 800;
+      var rect = node.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        node.classList.add("reveal-in");
+      } else {
+        revealObserver.observe(node);
+      }
+    }
+    }
   // ── 列表页 ────────────────────────────────────────────
 
   function collectCategories(data) {
@@ -815,6 +880,8 @@
     }
 
     renderList();
+    // [喵喵喵]: 只在首次渲染时绑定入场动画，后续搜索/筛选重渲染不再重复入场
+    revealScope(container);
 
     var searchInput = document.getElementById("search-input");
     if (searchInput) {
@@ -1395,6 +1462,8 @@
       "</a>" +
       "</div>" +
       "</section>";
+
+    revealScope(container);
   }
 
 
@@ -1402,6 +1471,9 @@
 
   window.initListPage = initListPage;
   window.initDetailPage = initDetailPage;
+
+  // 首页静态内容在此绑定；列表/详情页内容在各自 init 函数渲染后绑定
+  revealScope(document.querySelector("main"));
 
   var defaultActiveType = document.body
     ? document.body.getAttribute("data-nav-type") ||

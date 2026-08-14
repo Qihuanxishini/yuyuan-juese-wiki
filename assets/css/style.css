@@ -1,4 +1,7 @@
 @import url("./archive.css");
+/* [喵喵喵]: 手写感标题字体，CDN 分片按需加载，离线时降级到系统楷体 */
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.6.0/lxgwwenkailite-regular.css");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.6.0/lxgwwenkailite-bold.css");
 /* ============================================================
    花仙子 Wiki 静态站视觉系统
    清新简约手账基调 + 轻量氛围
@@ -36,6 +39,11 @@
   --radius-sm: 8px;
   --max-width: 1080px;
   --transition: 0.22s ease;
+  --font-hand: "LXGW WenKai Lite", "STKaiti", "KaiTi", "FangSong", serif;
+  --glow-honey: oklch(92% 0.055 95 / 0.55);
+  --glow-sky: oklch(90% 0.028 210 / 0.5);
+  --glow-peach: oklch(90% 0.045 30 / 0.35);
+  --shadow-lift: 0 16px 36px oklch(30% 0.03 50 / 0.13), 0 3px 10px oklch(30% 0.03 50 / 0.07);
 }
 
 *,
@@ -55,10 +63,12 @@ body {
   position: relative;
   overflow-x: hidden;
   background:
+    radial-gradient(640px 420px at 88% -4%, var(--glow-honey), transparent 68%),
+    radial-gradient(720px 520px at -6% 108%, var(--glow-sky), transparent 66%),
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px),
     var(--paper-warm);
-  background-size: 28px 28px, 28px 28px, auto;
+  background-size: auto, auto, 28px 28px, 28px 28px, auto;
   color: var(--ink-soft);
   font-family: "Microsoft YaHei", "Noto Sans SC", "PingFang SC", sans-serif;
   line-height: 1.68;
@@ -653,7 +663,7 @@ input {
 
 .nav-brand-title {
   color: var(--ink);
-  font-family: "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: 1.08rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -850,7 +860,7 @@ input {
 .hero-name {
   max-width: 720px;
   color: var(--ink);
-  font-family: "ZCOOL XiaoWei", "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: clamp(3.4rem, 7vw, 6.8rem);
   font-weight: 900;
   letter-spacing: 0.04em;
@@ -1224,7 +1234,7 @@ input {
 
 .section-title {
   color: var(--ink);
-  font-family: "ZCOOL XiaoWei", "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: clamp(2rem, 3vw, 3.2rem);
   line-height: 1.06;
   font-weight: 900;
@@ -1472,7 +1482,7 @@ input {
 
 .home-footer-title {
   color: var(--ink);
-  font-family: "ZCOOL XiaoWei", "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: clamp(1.4rem, 2vw, 1.9rem);
   font-weight: 900;
   margin-bottom: 16px;
@@ -1521,7 +1531,7 @@ input {
 
 .page-title {
   color: var(--ink);
-  font-family: "ZCOOL XiaoWei", "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: clamp(2.2rem, 4vw, 3.2rem);
   line-height: 1.05;
   margin-bottom: 10px;
@@ -1813,7 +1823,7 @@ input {
 
 .detail-title h1 {
   color: var(--ink);
-  font-family: "ZCOOL XiaoWei", "STKaiti", "KaiTi", serif;
+  font-family: var(--font-hand);
   font-size: clamp(2rem, 3vw, 3rem);
   line-height: 1.08;
 }
@@ -2332,6 +2342,37 @@ input {
 
   .detail-overlay-bar {
     padding-top: 16px;
+  }
+}
+/* ── 滚动进入动画 ─────────────────────────────── */
+/* [喵喵喵]: reveal 类由 JS 在确认可动画时才挂上，脚本异常或 reduce 下内容直接可见；
+   to 帧不声明 transform，避免 fill forwards 覆盖卡片的 hover 位移 */
+.reveal {
+  opacity: 0;
+}
+
+.reveal-in {
+  animation: revealIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0s);
+}
+
+@keyframes revealIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+  }
+
+  .reveal-in {
+    animation: none;
   }
 }
 @media (prefers-reduced-motion: reduce) {
